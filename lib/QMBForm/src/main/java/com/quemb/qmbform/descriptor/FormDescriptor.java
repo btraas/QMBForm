@@ -155,6 +155,11 @@ public class FormDescriptor {
         }
     }
 
+    protected void didChangedRow(RowDescriptor rowDescriptor, SectionDescriptor sectionDescriptor) {
+        if (mOnFormRowChangeListener != null) {
+            mOnFormRowChangeListener.onRowChanged(rowDescriptor, sectionDescriptor);
+        }
+    }
 
     protected OnFormRowChangeListener getOnFormRowChangeListener() {
         return mOnFormRowChangeListener;
@@ -167,8 +172,12 @@ public class FormDescriptor {
     public Map<String, Object> getFormValues() {
         Map<String, Object> m = new HashMap<String, Object>();
         for (SectionDescriptor section : getSections()) {
-            for (RowDescriptor row : section.getRows()) {
-                m.put(row.getTag(), row.getValueData());
+            if (section.isMultivalueSection()) {
+                m.put(section.getTag(), section.getRowValues());
+            } else {
+                for (RowDescriptor row : section.getRows()) {
+                    m.put(row.getTag(), row.getValueData());
+                }
             }
         }
         return m;

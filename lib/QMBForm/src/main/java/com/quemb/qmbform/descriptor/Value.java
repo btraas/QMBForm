@@ -1,9 +1,11 @@
 package com.quemb.qmbform.descriptor;
 
+import java.io.Serializable;
+
 /**
  * Created by tonimoeckel on 14.07.14.
  */
-public class Value<T> {
+public class Value<T> implements Serializable {
     private T mValue;
     private OnValueChangeListener mOnValueChangeListener;
 

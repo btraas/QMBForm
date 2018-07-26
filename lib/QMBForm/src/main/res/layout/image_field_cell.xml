@@ -10,18 +10,16 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:layout_weight="3"/>
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center_vertical|left"
+        android:paddingRight="10dp" />
 
-    <EditText
-        android:id="@+id/editText"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:background="@null"
-        android:gravity="right"
-        android:inputType="text"/>
-
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:layout_weight="1"/>
 
 </LinearLayout>

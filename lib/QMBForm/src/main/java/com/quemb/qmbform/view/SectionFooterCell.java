@@ -5,19 +5,19 @@ import android.widget.TextView;
 
 import com.quemb.qmbform.R;
 import com.quemb.qmbform.descriptor.CellDescriptor;
-import com.quemb.qmbform.descriptor.SectionDescriptor;
+import com.quemb.qmbform.descriptor.SectionFooterDescriptor;
 
 /**
  * Created by tonimoeckel on 15.07.14.
  */
-public class SectionCell extends Cell {
+public class SectionFooterCell extends Cell {
 
-    //private SectionDescriptor mSectionDescriptor;
+    //private SectionFooterDescriptor mSectionDescriptor;
 
     private TextView mTextView;
 
-    public SectionCell(Context context,
-                       SectionDescriptor sectionDescriptor) {
+    public SectionFooterCell(Context context,
+                             SectionFooterDescriptor sectionDescriptor) {
         super(context, sectionDescriptor);
     }
 
@@ -32,12 +32,12 @@ public class SectionCell extends Cell {
 
         mTextView = (TextView) findViewById(R.id.textView);
 
-        setStyleId(mTextView, CellDescriptor.APPEARANCE_SECTION, CellDescriptor.SECTION_COLOR_LABEL);
+        setStyleId(mTextView, CellDescriptor.APPEARANCE_FOOTER, CellDescriptor.FOOTER_COLOR_LABEL);
     }
 
     @Override
     protected int getResource() {
-        return R.layout.section_cell;
+        return R.layout.section_footer_cell;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class SectionCell extends Cell {
         return false;
     }
 
-    public SectionDescriptor getSectionDescriptor() {
-        return (SectionDescriptor) getFormItemDescriptor();
+    public SectionFooterDescriptor getSectionDescriptor() {
+        return (SectionFooterDescriptor) getFormItemDescriptor();
     }
 
 }

@@ -1,10 +1,10 @@
 package com.quemb.qmbform.descriptor;
 
+import android.content.Context;
+
 import com.quemb.qmbform.R;
 import com.quemb.qmbform.annotation.FormElement;
 import com.quemb.qmbform.annotation.FormValidator;
-
-import android.content.Context;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -72,12 +72,15 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     public static final String FormRowDescriptorTypeHtmlVertical = "htmlVertical";
     public static final String FormRowDescriptorTypeSelectorMultipleDialog = "selectorMultipleDialog";
 
+    public static final String FormRowDescriptorTypeTextField = "textField";
+
     private String mRowType;
     private Value<T> mValue;
     /**
      * A list of valid values to pick from (e.g. used for spinners)
      */
     private DataSource<T> mDataSource;
+    private ImageDelegate mImageDelegate;
     private Boolean mRequired = false;
     private Boolean mDisabled = false;
 
@@ -154,7 +157,11 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     }
 
     public Object getValueData() {
-        return mValue.getValue();
+        if (mValue != null) {
+            return mValue.getValue();
+        } else {
+            return null;
+        }
     }
 
     public Boolean getRequired() {
@@ -179,6 +186,18 @@ public class RowDescriptor<T> extends FormItemDescriptor {
 
     public void setDataSource(DataSource<T> dataSource) {
         mDataSource = dataSource;
+    }
+
+    public boolean hasImageDelegate() {
+        return mImageDelegate != null;
+    }
+
+    public ImageDelegate getImageDelegate() {
+        return mImageDelegate;
+    }
+
+    public void setImageDelegate(ImageDelegate imageDelegate) {
+        mImageDelegate = imageDelegate;
     }
 
     public Boolean getDisabled() {
@@ -268,6 +287,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
         String ts = tsLong.toString();
         RowDescriptor newInstance = RowDescriptor.newInstance(rowDescriptor.getTag() + "_" + ts, rowDescriptor.getRowType());
         newInstance.setDataSource(rowDescriptor.getDataSource());
+        newInstance.setTitle(rowDescriptor.getTitle());
         return newInstance;
     }
 

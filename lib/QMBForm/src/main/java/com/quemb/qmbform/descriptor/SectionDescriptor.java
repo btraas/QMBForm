@@ -12,6 +12,9 @@ public class SectionDescriptor extends FormItemDescriptor {
     private FormDescriptor mFormDescriptor;
     private ArrayList<RowDescriptor> mRows;
     private Boolean mMultivalueSection = false;
+    private Boolean mCanAddValue = true;
+    private String mFooterTitle = null;
+    private MultiValueDelegate mMultiValueDelegate;
 
     public static SectionDescriptor newInstance(String tag) {
 
@@ -73,7 +76,11 @@ public class SectionDescriptor extends FormItemDescriptor {
     }
 
     public int getRowCount() {
-        return mRows.size();
+        if (hasFooterTitle()) {
+            return mRows.size() + 1;
+        } else {
+            return mRows.size();
+        }
     }
 
     public List<RowDescriptor> getRows() {
@@ -88,16 +95,20 @@ public class SectionDescriptor extends FormItemDescriptor {
                 getFormDescriptor().didInsertRow(row, this);
             }
 
+            if (mMultiValueDelegate != null) {
+                mMultiValueDelegate.onAddedRow(row);
+            }
         }
     }
 
     private void removeRowAtIndex(int index) {
-        RowDescriptor rowDescriptor = mRows.get(index);
-        mRows.remove(index);
-        if (getFormDescriptor() != null) {
-            getFormDescriptor().didRemoveRow(rowDescriptor, this);
+        if (index > -1 && index < mRows.size()) {
+            RowDescriptor rowDescriptor = mRows.get(index);
+            mRows.remove(index);
+            if (getFormDescriptor() != null) {
+                getFormDescriptor().didRemoveRow(rowDescriptor, this);
+            }
         }
-
     }
 
     public boolean hasTitle() {
@@ -129,6 +140,18 @@ public class SectionDescriptor extends FormItemDescriptor {
         mMultivalueSection = multivalueSection;
     }
 
+    public void setmMultiValueDelegate(MultiValueDelegate delegate) {
+        mMultiValueDelegate = delegate;
+    }
+
+    public void setCanAddValue(Boolean mCanAddValue) {
+        this.mCanAddValue = mCanAddValue;
+    }
+
+    public Boolean canAddValue() {
+        return mCanAddValue;
+    }
+
     public List getRowValues() {
 
         ArrayList<Object> values = new ArrayList<>();
@@ -139,5 +162,34 @@ public class SectionDescriptor extends FormItemDescriptor {
         }
         return values;
 
+    }
+
+    public void setFooterTitle(String footerTitle) {
+        String oldFooterTitle = this.mFooterTitle;
+        this.mFooterTitle = footerTitle;
+
+        if (oldFooterTitle == null && footerTitle != null) {
+            getFormDescriptor().didInsertRow(null, this);
+        } else if (footerTitle == null) {
+            getFormDescriptor().didRemoveRow(null, this);
+        } else {
+            getFormDescriptor().didChangedRow(null, this);
+        }
+    }
+
+    public String getFooterTitle() {
+        return mFooterTitle;
+    }
+
+    public boolean hasFooterTitle() {
+        return mFooterTitle != null;
+    }
+
+    public SectionFooterDescriptor getFooterDescriptor() {
+        SectionFooterDescriptor descriptor = SectionFooterDescriptor.newInstance(mTag, getFooterTitle());
+        if (getCellConfig() != null) {
+            descriptor.setCellConfig(getCellConfig());
+        }
+        return descriptor;
     }
 }

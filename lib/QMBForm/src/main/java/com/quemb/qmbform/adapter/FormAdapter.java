@@ -1,5 +1,11 @@
 package com.quemb.qmbform.adapter;
 
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import com.quemb.qmbform.CellViewFactory;
 import com.quemb.qmbform.descriptor.FormDescriptor;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
 import com.quemb.qmbform.descriptor.RowDescriptor;
@@ -11,6 +17,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import com.quemb.qmbform.descriptor.SectionFooterDescriptor;
 
 import java.util.ArrayList;
 
@@ -22,13 +29,17 @@ public class FormAdapter extends BaseAdapter {
     private FormDescriptor mFormDescriptor;
     private ArrayList<FormItemDescriptor> mItems;
     private Context mContext;
-    private Boolean mEnableSectionSeperator;
+    private Boolean mEnableSectionSeparator;
 
-    public static FormAdapter newInstance(FormDescriptor formDescriptor, Context context){
+    public static FormAdapter newInstance(FormDescriptor formDescriptor, Context context) {
+        return FormAdapter.newInstance(formDescriptor, context, true);
+    }
+
+    public static FormAdapter newInstance(FormDescriptor formDescriptor, Context context, boolean enableSectionSeparator) {
         FormAdapter formAdapter = new FormAdapter();
         formAdapter.mFormDescriptor = formDescriptor;
         formAdapter.mContext = context;
-        formAdapter.setEnableSectionSeperator(true);
+        formAdapter.setEnableSectionSeparator(enableSectionSeparator);
         return formAdapter;
     }
 
@@ -44,7 +55,11 @@ public class FormAdapter extends BaseAdapter {
 
             mItems.addAll(sectionDescriptor.getRows());
 
-            if (getEnableSectionSeperator() && sectionCount < mFormDescriptor.getSections().size()) {
+            if (sectionDescriptor.hasFooterTitle()) {
+                mItems.add(sectionDescriptor.getFooterDescriptor());
+            }
+
+            if (getEnableSectionSeparator() && sectionCount < mFormDescriptor.getSections().size()) {
 
                 FormItemDescriptor itemDescriptor = mItems.get(mItems.size() - 1);
                 if (itemDescriptor instanceof RowDescriptor)
@@ -76,12 +91,20 @@ public class FormAdapter extends BaseAdapter {
         return CellViewFactory.getInstance().createViewForFormItemDescriptor(mContext,getItem(position));
     }
 
-
-    public Boolean getEnableSectionSeperator() {
-        return mEnableSectionSeperator;
+    @Override
+    public boolean isEnabled(int position) {
+        if (getItem(position) instanceof SectionDescriptor ||
+            getItem(position) instanceof SectionFooterDescriptor) {
+            return false;
+        }
+        return super.isEnabled(position);
     }
 
-    public void setEnableSectionSeperator(Boolean enableSectionSeperator) {
-        mEnableSectionSeperator = enableSectionSeperator;
+    public Boolean getEnableSectionSeparator() {
+        return mEnableSectionSeparator;
+    }
+
+    public void setEnableSectionSeparator(Boolean enableSectionSeperator) {
+        mEnableSectionSeparator = enableSectionSeperator;
     }
 }

@@ -1,8 +1,13 @@
 package com.quemb.qmbform;
 
+import android.content.Context;
+import android.os.Build;
+import android.util.Log;
+
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
 import com.quemb.qmbform.descriptor.RowDescriptor;
 import com.quemb.qmbform.descriptor.SectionDescriptor;
+import com.quemb.qmbform.descriptor.SectionFooterDescriptor;
 import com.quemb.qmbform.view.Cell;
 import com.quemb.qmbform.view.FormBaseCell;
 import com.quemb.qmbform.view.FormBooleanFieldCell;
@@ -31,21 +36,20 @@ import com.quemb.qmbform.view.FormEditTextViewFieldCell;
 import com.quemb.qmbform.view.FormEditTextViewInlineFieldCell;
 import com.quemb.qmbform.view.FormEditURLFieldCell;
 import com.quemb.qmbform.view.FormExternalButtonFieldCell;
+import com.quemb.qmbform.view.FormImageFieldCell;
 import com.quemb.qmbform.view.FormIntegerSliderFieldCell;
 import com.quemb.qmbform.view.FormMultipleDialogFieldCell;
 import com.quemb.qmbform.view.FormPickerDialogFieldCell;
 import com.quemb.qmbform.view.FormPickerDialogVerticalFieldCell;
 import com.quemb.qmbform.view.FormSpinnerFieldCell;
 import com.quemb.qmbform.view.FormSpinnerInlineFieldCell;
+import com.quemb.qmbform.view.FormTextLabelFieldCell;
 import com.quemb.qmbform.view.FormTextPickerDialogFieldCell;
 import com.quemb.qmbform.view.FormTimeDialogFieldCell;
 import com.quemb.qmbform.view.FormTimeInlineFieldCell;
 import com.quemb.qmbform.view.SectionCell;
-import com.quemb.qmbform.view.SeperatorSectionCell;
-
-import android.content.Context;
-import android.os.Build;
-import android.util.Log;
+import com.quemb.qmbform.view.SectionFooterCell;
+import com.quemb.qmbform.view.SeparatorSectionCell;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -118,8 +122,11 @@ public class CellViewFactory {
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeIntegerSlider, FormIntegerSliderFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeExternal, FormExternalButtonFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeHTMLText, FormEditHTMLTextViewFieldCell.class);
-        mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeSectionSeperator, SeperatorSectionCell.class);
+        mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeSectionSeperator, SeparatorSectionCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeHtmlVertical, FormDetailHtmlTextVerticalFieldCell.class);
+
+        mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeTextField, FormTextLabelFieldCell.class);
+        mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeImage, FormImageFieldCell.class);
     }
 
     public Cell createViewForFormItemDescriptor(Context context, FormItemDescriptor descriptor) {
@@ -130,6 +137,11 @@ public class CellViewFactory {
 
             SectionCell sectionCell = new SectionCell(context, (SectionDescriptor) descriptor);
             rowView = sectionCell;
+
+        } else if (descriptor instanceof SectionFooterDescriptor) {
+
+            SectionFooterCell footerCell = new SectionFooterCell(context, (SectionFooterDescriptor) descriptor);
+            rowView = footerCell;
 
         } else if (descriptor instanceof RowDescriptor) {
             RowDescriptor row = (RowDescriptor) descriptor;

@@ -1,16 +1,17 @@
 package com.quemb.qmbform.view;
 
-import com.quemb.qmbform.R;
-import com.quemb.qmbform.descriptor.CellDescriptor;
-import com.quemb.qmbform.descriptor.RowDescriptor;
-import com.quemb.qmbform.descriptor.Value;
-
 import android.content.Context;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.quemb.qmbform.R;
+import com.quemb.qmbform.descriptor.CellDescriptor;
+import com.quemb.qmbform.descriptor.RowDescriptor;
+import com.quemb.qmbform.descriptor.Value;
 
 /**
  * Created by tonimoeckel on 15.07.14.
@@ -103,4 +104,10 @@ public class FormEditTextFieldCell extends FormTitleFieldCell {
         return mEditView;
     }
 
+    @Override
+    public void onCellSelected() {
+        mEditView.requestFocus();
+        InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditView, InputMethodManager.SHOW_IMPLICIT);
+    }
 }

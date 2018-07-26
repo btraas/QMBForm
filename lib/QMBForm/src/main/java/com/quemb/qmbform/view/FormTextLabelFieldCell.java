@@ -11,11 +11,11 @@ import com.quemb.qmbform.descriptor.RowDescriptor;
 /**
  * Created by tonimoeckel on 15.07.14.
  */
-public class FormTitleFieldCell extends FormBaseCell implements View.OnClickListener {
+public class FormTextLabelFieldCell extends FormBaseCell {
     private TextView mTextView;
 
-    public FormTitleFieldCell(Context context,
-                              RowDescriptor rowDescriptor) {
+    public FormTextLabelFieldCell(Context context,
+                                  RowDescriptor rowDescriptor) {
         super(context, rowDescriptor);
     }
 
@@ -23,7 +23,6 @@ public class FormTitleFieldCell extends FormBaseCell implements View.OnClickList
     protected void init() {
         super.init();
         mTextView = (TextView) findViewById(R.id.textView);
-        mTextView.setOnClickListener(this);
 
         setStyleId(mTextView, CellDescriptor.APPEARANCE_TEXT_LABEL, CellDescriptor.COLOR_LABEL);
     }
@@ -51,10 +50,4 @@ public class FormTitleFieldCell extends FormBaseCell implements View.OnClickList
         return mTextView;
     }
 
-    @Override
-    public void onClick(View v) {
-        if (!getRowDescriptor().getDisabled()) {
-            onCellSelected();
-        }
-    }
 }

@@ -9,10 +9,10 @@ import android.widget.LinearLayout;
 /**
  * Created by tonimoeckel on 18.02.15.
  */
-public class SeperatorSectionCell extends FormBaseCell {
+public class SeparatorSectionCell extends FormBaseCell {
 
 
-    public SeperatorSectionCell(Context context,
+    public SeparatorSectionCell(Context context,
                                 RowDescriptor rowDescriptor) {
         super(context, rowDescriptor);
     }
@@ -34,7 +34,7 @@ public class SeperatorSectionCell extends FormBaseCell {
 
     @Override
     protected int getResource() {
-        return R.layout.section_seperator_cell;
+        return R.layout.section_separator_cell;
     }
 
     @Override
