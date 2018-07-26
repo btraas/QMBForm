@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QMBForm</string>
+    <string name="btn_select">Auswählen</string>
+    <string name="cancel_button_text">Abbrechen</string>
+    <string name="cm_label">cm</string>
+    <string name="done_button_text">Fertig</string>
+    <string name="feet_label">Fuß</string>
+    <string name="height_picker_dialog_title">Wähle eine Höhe</string>
+    <string name="inches_label">Inches</string>
+    <string name="msg_check_form">Bitte überprüfen Sie Ihre Eingaben</string>
+    <string name="msg_no_entries">Zur Zeit liegen keine Einträge vor</string>
+    <string name="msg_x_is_required">ist ein erforderliches Feld</string>
+    <string name="nonpositive_number_error">muss größer als 0 sein</string>
+    <string name="test_error"/>
+    <string name="title_no_entries">Keine Einträge</string>
+    <string name="validation_invalid_email">Keine korrekte E-Mail Adresse</string>
+    <string name="validation_is_required">ist erforderlich</string>
+</resources>

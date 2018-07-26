@@ -9,13 +9,13 @@ buildscript {
     }
     dependencies {
 
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
     }
 }
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 14
@@ -60,12 +60,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:25.2.0'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.hamcrest:hamcrest-core:1.2.1'
-    testCompile "org.robolectric:robolectric:3.2.2"
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-core:1.2.1'
+    testImplementation "org.robolectric:robolectric:3.2.2"
 
 }
 
@@ -78,6 +78,7 @@ idea {
 }
 
 apply plugin: 'org.sonarqube'
+
 
 sonarqube {
     properties {
@@ -108,7 +109,7 @@ task jacocoTestReport(type: JacocoReport ) {
     description = "Generates Jacoco coverage reports: XML and HTML"
     group = "Reporting"
 
-    jacocoClasspath = project.configurations['androidJacocoAnt']
+    jacocoClasspath = project.configurations['jacocoAnt']
 
     def fileFilter = ['**/R.class',
                       '**/R$*.class',
@@ -138,6 +139,6 @@ task jacocoTestReport(type: JacocoReport ) {
 }
 
 
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.quemb'
