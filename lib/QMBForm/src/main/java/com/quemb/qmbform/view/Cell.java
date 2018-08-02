@@ -1,5 +1,6 @@
 package com.quemb.qmbform.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
@@ -27,11 +28,11 @@ public abstract class Cell extends LinearLayout {
 
     private View mDividerView;
 
-    protected FragmentActivity mActivity;
+    protected Activity mActivity;
 
     public Cell(Context context, FormItemDescriptor formItemDescriptor) {
         super(context);
-        mActivity = (FragmentActivity) context;
+        mActivity = (Activity)context;
 
         setFormItemDescriptor(formItemDescriptor);
 
@@ -97,7 +98,7 @@ public abstract class Cell extends LinearLayout {
 
         dividerView.setLayoutParams(new LayoutParams(
                 LayoutParams.MATCH_PARENT,
-                1
+                0
         ));
 
         dividerView.setBackgroundColor(getThemeValue(android.R.attr.listDivider));
@@ -113,7 +114,7 @@ public abstract class Cell extends LinearLayout {
     }
 
     public boolean shouldAddDivider() {
-        return true;
+        return false;
     }
 
     public void lastInSection() {

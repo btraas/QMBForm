@@ -2,7 +2,19 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="#ffefeff4" />
+
+            <solid android:color="@color/listDivider" />
+
+            <!--<solid android:color="#ffefeff4" />-->
+            <!--<solid android:color="#fff" />-->
+            <!--<gradient-->
+                <!--android:angle="270"-->
+                <!--android:centerX="23%"-->
+                <!--android:startColor="#10000000"-->
+                <!--android:centerColor="#10000000"-->
+                <!--android:endColor="#10000000"-->
+                <!--android:type="linear"/>-->
+
         </shape>
     </item>
 </selector>

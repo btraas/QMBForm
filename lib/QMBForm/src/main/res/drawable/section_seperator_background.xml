@@ -2,13 +2,22 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <gradient
-                android:angle="270"
-                android:centerX="23%"
-                android:startColor="#40000000"
-                android:centerColor="#10000000"
-                android:endColor="#10000000"
-                android:type="linear"/>
+            <solid android:color="@color/listDivider" />
+
+            <!--<gradient-->
+                <!--android:angle="270"-->
+                <!--android:centerX="23%"-->
+                <!--android:startColor="#40000000"-->
+                <!--android:centerColor="#10000000"-->
+                <!--android:endColor="#10000000"-->
+                <!--android:type="linear"/>-->
+            <!--<gradient-->
+                <!--android:angle="270"-->
+                <!--android:centerX="23%"-->
+                <!--android:startColor="#10000000"-->
+                <!--android:centerColor="#05000000"-->
+                <!--android:endColor="#10000000"-->
+                <!--android:type="linear"/>-->
         </shape>
     </item>
 </selector>

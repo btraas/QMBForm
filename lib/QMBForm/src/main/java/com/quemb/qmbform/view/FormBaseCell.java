@@ -95,7 +95,7 @@ public abstract class FormBaseCell extends Cell {
 
         float scale = getResources().getDisplayMetrics().density;
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        params.setMargins((int) (5 * scale + 0.5f), 0, 0, 0);
+        //params.setMargins((int) (5 * scale + 0.5f), 0, 0, 0);
 
         ImageButton deleteButton = new ImageButton(getContext());
         deleteButton.setId(REMOVE_BUTTON_ID);
@@ -172,11 +172,13 @@ public abstract class FormBaseCell extends Cell {
     @Override
     public boolean shouldAddDivider() {
 
-        RowDescriptor rowDescriptor = (RowDescriptor) getFormItemDescriptor();
-        if (rowDescriptor.isLastRowInSection() && !rowDescriptor.getSectionDescriptor().hasFooterTitle())
-            return false;
+        return false;
 
-        return super.shouldAddDivider();
+//        RowDescriptor rowDescriptor = (RowDescriptor) getFormItemDescriptor();
+//        if (rowDescriptor.isLastRowInSection() && !rowDescriptor.getSectionDescriptor().hasFooterTitle())
+//            return false;
+//
+//        return super.shouldAddDivider();
     }
 
     @Override

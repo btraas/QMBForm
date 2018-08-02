@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import com.devrygreenhouses.qmb.CustomCellViewFactory;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
 import com.quemb.qmbform.descriptor.RowDescriptor;
 import com.quemb.qmbform.descriptor.SectionDescriptor;
@@ -20,6 +21,7 @@ import com.quemb.qmbform.view.FormDetailHtmlTextVerticalFieldCell;
 import com.quemb.qmbform.view.FormDetailTextFieldCell;
 import com.quemb.qmbform.view.FormDetailTextInlineFieldCell;
 import com.quemb.qmbform.view.FormEditCurrencyFieldCell;
+import com.quemb.qmbform.view.FormEditCurrencyInlineFieldCell;
 import com.quemb.qmbform.view.FormEditEmailFieldCell;
 import com.quemb.qmbform.view.FormEditEmailInlineFieldCell;
 import com.quemb.qmbform.view.FormEditHTMLTextViewFieldCell;
@@ -105,6 +107,8 @@ public class CellViewFactory {
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeNumber, FormEditNumberFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeNumberInline, FormEditNumberInlineFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeCurrency, FormEditCurrencyFieldCell.class);
+        mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeCurrencyInline, FormEditCurrencyInlineFieldCell.class);
+
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeInteger, FormEditIntegerFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypeIntegerInline, FormEditIntegerInlineFieldCell.class);
         mViewRowTypeMap.put(RowDescriptor.FormRowDescriptorTypePhone, FormEditPhoneFieldCell.class);
@@ -133,6 +137,10 @@ public class CellViewFactory {
 
         Cell rowView = null;
 
+        if (descriptor instanceof CustomCellViewFactory) {
+            return ((CustomCellViewFactory) descriptor).createView(context);
+        }
+
         if (descriptor instanceof SectionDescriptor) {
 
             SectionCell sectionCell = new SectionCell(context, (SectionDescriptor) descriptor);
@@ -144,6 +152,8 @@ public class CellViewFactory {
             rowView = footerCell;
 
         } else if (descriptor instanceof RowDescriptor) {
+
+
             RowDescriptor row = (RowDescriptor) descriptor;
             try {
                 FormBaseCell formBaseCell;

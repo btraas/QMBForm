@@ -9,4 +9,6 @@
     <color name="redColor">#ffa13b3a</color>
     <color name="greenColor">#ff55a14d</color>
 
+    <color name="listDivider">#f8f8f8</color>
+
 </resources>

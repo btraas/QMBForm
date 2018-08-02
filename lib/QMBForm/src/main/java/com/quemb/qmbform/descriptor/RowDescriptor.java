@@ -20,7 +20,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     public static final String FormRowDescriptorTypeName = "name";
     public static final String FormRowDescriptorTypeNameVertical = "nameVertical";
     public static final String FormRowDescriptorTypeText = "text";
-    public static final String FormRowDescriptorTypeTextInline = "textInline";
+    public static final String FormRowDescriptorTypeTextInline = "textInline"; // Normal edit text, FormEditTextInlineFieldCell
     public static final String FormRowDescriptorTypeHTMLText = "htmlText";
     public static final String FormRowDescriptorTypeDetailInline = "detailInline";
     public static final String FormRowDescriptorTypeDetail = "detail";
@@ -33,6 +33,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     public static final String FormRowDescriptorTypeNumberInline = "numberInline";
     public static final String FormRowDescriptorTypeIntegerSlider = "integerSlider";
     public static final String FormRowDescriptorTypeCurrency = "currency";
+    public static final String FormRowDescriptorTypeCurrencyInline = "currencyInline";
     public static final String FormRowDescriptorTypePhone = "phone";
     public static final String FormRowDescriptorTypeTwitter = "twitter";
     public static final String FormRowDescriptorTypeAccount = "account";
@@ -84,7 +85,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     private Boolean mRequired = false;
     private Boolean mDisabled = false;
 
-    private List<FormValidator> mValidators;
+    protected List<FormValidator> mValidators;
 
     private List<FormOptionsObject> mSelectorOptions;
 
