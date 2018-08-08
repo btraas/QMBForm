@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentLight">#FfC0C0</color>
+    <color name="colorPrimary">#22634B</color>
+    <color name="colorPrimaryBright">#328335</color>
+    <color name="colorPrimaryDark">#02432B</color>
     <color name="form_cell_background">#FFFFFF</color>
     <color name="form_cell_disabled">#777777</color>
     <color name="greenColor">#ff55a14d</color>

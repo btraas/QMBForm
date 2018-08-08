@@ -1,11 +1,17 @@
 package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
+import android.support.v4.content.ContextCompat
+import android.widget.TextView
+import com.devrygreenhouses.qmb.ReflectionTools
+import com.quemb.qmbform.R
 import com.quemb.qmbform.descriptor.*
 import com.quemb.qmbform.view.Cell
+import kotlinx.android.synthetic.main.finish_field_cell.view.*
 
 
-abstract class NestedPushHandler<T: NestedElement>(oldActivity: Activity, title: String, val rootElement: T): PushHandler(oldActivity, title) {
+abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,title: String, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
+    : PushHandler<T>(oldActivity, title, valueChangedListener) {
 
     abstract fun cloneFor(oldActivity: Activity, title: String, rootElement: T): NestedPushHandler<T>
 
@@ -16,12 +22,15 @@ abstract class NestedPushHandler<T: NestedElement>(oldActivity: Activity, title:
 //        this.rootElement = rootElement
 //    }
 
-    fun createViewForElement(rowDescriptor: PushRowDescriptor<T>, element: NestedElement): Cell {
+    open fun createViewForElement(rowDescriptor: PushRowDescriptor<T>, element: T): Cell {
         val isFolder = element.isFolder()
         var cell = when {
             isFolder -> PushCell(oldActivity, rowDescriptor, this)
-            else -> FinishCell(oldActivity, rowDescriptor, this)
+            else -> FinishCell<T>(oldActivity, rowDescriptor, this, element)
         }
+        cell.findViewById<TextView>(R.id.textView)
+                .setTextColor(ContextCompat.getColor(oldActivity, ReflectionTools.getColor(oldActivity, "colorPrimary")))
+
         return cell
     }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.quemb.qmbform.OnFormRowClickListener;
 import com.quemb.qmbform.R;
 import com.quemb.qmbform.descriptor.CellDescriptor;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
@@ -87,11 +88,17 @@ public abstract class FormBaseCell extends Cell {
 
     protected LinearLayout createMultiValueWrapper() {
 
+
+
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setId(R.id.wrap_content);
         linearLayout.setFocusable(false);
         linearLayout.setFocusableInTouchMode(false);
+
+        if(this.getTag() != null && this.getTag().equals("add_row")) {
+            return linearLayout;
+        }
 
         float scale = getResources().getDisplayMetrics().density;
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -101,6 +108,7 @@ public abstract class FormBaseCell extends Cell {
         deleteButton.setId(REMOVE_BUTTON_ID);
         deleteButton.setFocusableInTouchMode(false);
         deleteButton.setFocusable(false);
+        deleteButton.setPadding(20, 20, 20, 20);
         deleteButton.setImageResource(R.drawable.ic_action_remove);
         deleteButton.setBackgroundColor(Color.TRANSPARENT);
         deleteButton.setVisibility(VISIBLE);
@@ -129,38 +137,53 @@ public abstract class FormBaseCell extends Cell {
 
         linearLayout.addView(deleteButton, params);
 
-        ImageButton addButton = new ImageButton(getContext());
-        addButton.setId(ADD_BUTTON_ID);
-        addButton.setFocusableInTouchMode(false);
-        addButton.setFocusable(false);
-        addButton.setImageResource(R.drawable.ic_action_new);
-        addButton.setBackgroundColor(Color.TRANSPARENT);
-        addButton.setVisibility(GONE);
-        addButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SectionDescriptor sectionDescriptor = getRowDescriptor().getSectionDescriptor();
-                sectionDescriptor.addRow(RowDescriptor.newInstance(getRowDescriptor()));
-
-            }
-        });
-
-        linearLayout.addView(addButton, params);
+//        ImageButton addButton = new ImageButton(getContext());
+//        addButton.setId(ADD_BUTTON_ID);
+//        addButton.setFocusableInTouchMode(false);
+//        addButton.setFocusable(false);
+//        addButton.setPadding(20, 20, 20, 20);
+//
+//        addButton.setImageResource(R.drawable.ic_action_new);
+//        addButton.setBackgroundColor(Color.TRANSPARENT);
+//        addButton.setVisibility(GONE);
+//        addButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                SectionDescriptor sectionDescriptor = getRowDescriptor().getSectionDescriptor();
+//                sectionDescriptor.addRow(RowDescriptor.newInstance(getRowDescriptor()));
+//
+//            }
+//        });
+//
+//        linearLayout.addView(addButton, params);
 
         SectionDescriptor sectionDescriptor = getRowDescriptor().getSectionDescriptor();
 
+//        RowDescriptor<?> addRow = RowDescriptor.newInstance("add_row", RowDescriptor.FormRowDescriptorTypeButtonInline, "Add");
+//        addRow.setOnFormRowClickListener(new OnFormRowClickListener() {
+//            @Override
+//            public void onFormRowClick(FormItemDescriptor itemDescriptor) {
+//                SectionDescriptor sd = getRowDescriptor().getSectionDescriptor();
+//                int idx = sd.getRowCount()-1;
+//                sd.addRow(RowDescriptor.newInstance(getRowDescriptor()), idx);
+//            }
+//        });
+//        if(sectionDescriptor.findRowDescriptor("add_row") == null) {
+//            sectionDescriptor.addRow(addRow) ;
+//        }
+
         if (this.getRowDescriptor().getSectionDescriptor().canAddValue()) {
             int index = sectionDescriptor.getIndexOfRowDescriptor(getRowDescriptor());
-            if (index == sectionDescriptor.getRowCount() - 1) {
-                addButton.setVisibility(VISIBLE);
+            if (index == sectionDescriptor.getRowCount() - 1 || "add_row".equals(getTag())) {
+                //addButton.setVisibility(VISIBLE);
                 deleteButton.setVisibility(GONE);
             } else {
-                addButton.setVisibility(GONE);
+                //addButton.setVisibility(GONE);
                 deleteButton.setVisibility(VISIBLE);
             }
         } else {
-            addButton.setVisibility(GONE);
+            //addButton.setVisibility(GONE);
             deleteButton.setVisibility(VISIBLE);
         }
 
@@ -194,7 +217,7 @@ public abstract class FormBaseCell extends Cell {
     public void onValueChanged(Value<?> newValue) {
         RowDescriptor row = getRowDescriptor();
         Value<?> oldValue = row.getValue();
-        if (oldValue == null || newValue == null || !newValue.getValue().equals(oldValue.getValue())) {
+        if (oldValue == null || newValue == null || newValue.getValue() == null || !newValue.getValue().equals(oldValue.getValue())) {
             OnFormRowValueChangedListener listener = getRowDescriptor().getSectionDescriptor().getFormDescriptor().getOnFormRowValueChangedListener();
             row.setValue(newValue);
             if (listener != null) {

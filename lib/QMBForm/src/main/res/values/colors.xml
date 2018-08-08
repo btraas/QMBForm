@@ -11,4 +11,10 @@
 
     <color name="listDivider">#f8f8f8</color>
 
+    <color name="colorPrimary">#22634B</color>
+    <color name="colorPrimaryDark">#02432B</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentLight">#FfC0C0</color>
+
+    <color name="colorPrimaryBright">#328335</color>
 </resources>

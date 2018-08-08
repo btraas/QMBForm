@@ -10,7 +10,8 @@ import com.quemb.qmbform.descriptor.*
 import java.io.Serializable
 
 
-abstract class PushHandler(val oldActivity: Activity, val title: String): Serializable, OnFormRowValueChangedListener, OnFormRowClickListener {
+abstract class PushHandler<T: NestedElement<*>>(val oldActivity: Activity, val title: String, val valueChangedListener: OnFormRowValueChangedListener)
+    : Serializable, OnFormRowClickListener {
 
     private val TAG = "PushHandler"
 
@@ -19,7 +20,7 @@ abstract class PushHandler(val oldActivity: Activity, val title: String): Serial
 
 //    var oldActivity: Activity? = null
     var newActivity: CustomFormActivity? = null
-    var selectedValue: Value<*>? = null
+    var selected: T? = null
 
     var onPresentCallback: ((Activity, CustomFormActivity) -> Unit)? = null
 
@@ -54,7 +55,7 @@ abstract class PushHandler(val oldActivity: Activity, val title: String): Serial
         mFormManager = FormManager()
         mFormManager?.setup(form, listView, activity)
         mFormManager?.setOnFormRowClickListener(this)
-        mFormManager?.setOnFormRowValueChangedListener(this)
+        mFormManager?.setOnFormRowValueChangedListener(valueChangedListener)
 
 
         Log.d(TAG, "invoking callback")
@@ -65,12 +66,15 @@ abstract class PushHandler(val oldActivity: Activity, val title: String): Serial
 
     }
 
+//    fun select(row: PushRowDescriptor<T>) {
+//        this.onFormRowClick(row)
+//    }
+//
 
-    @CallSuper
-    override fun onValueChanged(rowDescriptor: RowDescriptor<*>?, oldValue: Value<*>?, newValue: Value<*>?) {
-        selectedValue = newValue
-        newActivity?.finish()
-    }
+//    override fun onValueChanged(rowDescriptor: RowDescriptor<*>?, oldValue: Value<*>?, newValue: Value<*>?) {
+//        selectedValue = newValue
+//        newActivity?.finish()
+//    }
 
 
 

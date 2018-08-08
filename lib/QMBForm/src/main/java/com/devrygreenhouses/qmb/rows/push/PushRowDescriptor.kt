@@ -2,30 +2,35 @@ package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
 import android.content.Context
+import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory
+import com.devrygreenhouses.qmb.ReflectionTools
 import com.quemb.qmbform.annotation.FormValidator
 import com.quemb.qmbform.descriptor.RowDescriptor
 import com.quemb.qmbform.view.Cell
 import java.util.ArrayList
 import com.quemb.qmbform.R
+import com.quemb.qmbform.descriptor.Value
+import kotlinx.android.synthetic.main.push_field_cell.view.*
 
 /**
  * Can't pass element because there may not be a root element.
  *
  */
-class PushRowDescriptor<T: NestedElement>(tag: String, title: String, val activity: Activity,
-                                                                             val handler: NestedPushHandler<T>, val rootElement: NestedElement)
-    : RowDescriptor<T>(), CustomCellViewFactory {
+class PushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val activity: Activity,
+                                                val handler: NestedPushHandler<T>, val rootElement: T)
+    : RowDescriptor<T>(), CustomCellViewFactory, Cloneable {
 
 //    var createCallback: ((Activity, Activity) -> Unit)? = null
 
     init {
-        this.mValidators = ArrayList<FormValidator>()
+        this.mValidators = ArrayList<FormValidator>() as MutableList<FormValidator>?
         this.mTitle = title
         this.mTag = tag
 //        this.mRowType = rowType
-        this.value = value
+//        this.value = value
     }
 
     override fun createView(ctx: Context): Cell {
@@ -39,24 +44,52 @@ class PushRowDescriptor<T: NestedElement>(tag: String, title: String, val activi
 //        }
 //
 
-        cell.findViewById<TextView>(R.id.textView).text = title
+        cell.findViewById<TextView>(R.id.textView).apply {
+            text = title
+//            setTextColor(ContextCompat.getColor(activity, android.R.color.holo_blue_dark))
+
+        }
 
         return cell
 
+
     }
 
-    fun isFolder(obj: T, getShallowChildren: ((T) -> List<T>)): Boolean {
-        val children = getShallowChildren(obj)
-        return children.count() > 0
+    override fun setValue(value: Value<T>?) {
+        Log.d("PushRowDescriptor", "setValue(${value?.value})")
+
+        super.setValue(value)
+        val str = value?.value?.toString()
+        if(this.cell !is PushCell<*>) {
+            Log.w("PushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
+            return
+        }
+        val cell = this.cell as PushCell<T>
+        val valueTextView = (cell).findViewById<TextView>(R.id.value)
+        activity.runOnUiThread {
+            Log.d("PushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
+
+            valueTextView!!.text = "$str"
+            valueTextView.invalidate()
+            Log.d("PushRowDescriptor", "Actual: " + this.cell.value.text.toString())
+
+            //this.cell = cell
+            //cell?.findViewById<TextView>(R.id.textView)?.text = str
+        }
     }
 
-    fun filterFolders(objects: List<T>, getShallowChildren: ((T) -> List<T>)): List<T> {
-        return objects.filter { isFolder(it, getShallowChildren) }
-    }
-
-    fun filterSimple(objects: List<T>, getShallowChildren: ((T) -> List<T>)): List<T> {
-        return objects.filter { !isFolder(it, getShallowChildren) }
-    }
+//    fun isFolder(obj: T, getShallowChildren: ((T) -> List<T>)): Boolean {
+//        val children = getShallowChildren(obj)
+//        return children.count() > 0
+//    }
+//
+//    fun filterFolders(objects: List<T>, getShallowChildren: ((T) -> List<T>)): List<T> {
+//        return objects.filter { isFolder(it, getShallowChildren) }
+//    }
+//
+//    fun filterSimple(objects: List<T>, getShallowChildren: ((T) -> List<T>)): List<T> {
+//        return objects.filter { !isFolder(it, getShallowChildren) }
+//    }
 
 
 

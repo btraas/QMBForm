@@ -7,10 +7,14 @@ import android.graphics.Rect
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
+import android.view.inputmethod.CompletionInfo
+import android.view.inputmethod.CorrectionInfo
 import android.view.inputmethod.EditorInfo
 import android.widget.AutoCompleteTextView
 import android.widget.ListPopupWindow
+import android.widget.Toast
 
 import java.lang.reflect.Field
 import java.lang.reflect.Array.setInt
@@ -26,7 +30,8 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int): super(context, attrs, defStyleAttr, defStyleRes)
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int, popupTheme: Resources.Theme?): super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int, popupTheme: Resources.Theme?)
+            : super(context, attrs, defStyleAttr, defStyleRes)
 
 //    override fun onAttachedToWindow() {
 //        super.onAttachedToWindow()
@@ -39,6 +44,8 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
 //    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 //        return super.onKeyDown(keyCode, event)
 //    }
+
+
 
     fun getPopupWindow(): ListPopupWindow {
         val field = javaClass.superclass.getDeclaredField("mPopup")
@@ -100,6 +107,23 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
         //if (mShowDropDownAlwaysAbove)
             outRect.bottom = -3000 // hack for https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-23/blob/master/android/widget/PopupWindow.java#L1449
     }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        //Toast.makeText(context, "onSelectionChanged!", Toast.LENGTH_SHORT).show()
+        super.onSelectionChanged(selStart, selEnd)
+    }
+
+    override fun onCommitCompletion(completion: CompletionInfo?) {
+        Log.d("CustomAutoComplete", "onCommitCompletion(completion" );
+        super.onCommitCompletion(completion)
+    }
+
+    override fun onCommitCorrection(info: CorrectionInfo?) {
+        Log.d("CustomAutoComplete", "onCommitCompletion(info" );
+
+        super.onCommitCorrection(info)
+    }
+
 
 
 }

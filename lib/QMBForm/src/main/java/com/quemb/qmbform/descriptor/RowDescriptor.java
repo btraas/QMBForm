@@ -2,6 +2,7 @@ package com.quemb.qmbform.descriptor;
 
 import android.content.Context;
 
+import com.devrygreenhouses.qmb.RowFactory;
 import com.quemb.qmbform.R;
 import com.quemb.qmbform.annotation.FormElement;
 import com.quemb.qmbform.annotation.FormValidator;
@@ -283,6 +284,10 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     }
 
     public static RowDescriptor newInstance(RowDescriptor rowDescriptor) {
+
+        if(rowDescriptor instanceof RowFactory) {
+            return ((RowFactory)rowDescriptor).buildRow();
+        }
 
         Long tsLong = System.currentTimeMillis() / 1000;
         String ts = tsLong.toString();

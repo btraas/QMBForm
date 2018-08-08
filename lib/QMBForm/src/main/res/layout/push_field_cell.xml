@@ -4,7 +4,8 @@
               android:orientation="horizontal"
               android:padding="@dimen/qmb_padding"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:background="?attr/selectableItemBackground">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,13 +13,27 @@
         android:layout_gravity="end"
         android:text="Title"
         android:layout_weight="1"
+        android:focusable="false"
+        android:clickable="false"
         android:id="@+id/textView"/>
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:clickable="false"
+        android:text=""
+        />
 
     <ImageView
         android:src="@drawable/ic_push_icon"
         android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:focusable="false"
+        android:clickable="false"
         />
 
 

@@ -3,6 +3,7 @@ package com.devrygreenhouses.qmb.rows.push
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.ListView
 import com.devrygreenhouses.qmb.rows.push.PushHandler
 import com.devrygreenhouses.qmb.rows.push.PushHandlerPointer
 import com.quemb.qmbform.R
@@ -10,7 +11,7 @@ import com.quemb.qmbform.R
 
 class CustomFormActivity : AppCompatActivity() {
 
-    var handler: PushHandler? = null
+    var handler: PushHandler<*>? = null
 
     private val TAG = "CustomFormActivity"
 
@@ -28,7 +29,7 @@ class CustomFormActivity : AppCompatActivity() {
         //Toast.makeText(this, "generating form", Toast.LENGTH_SHORT).show()
 
         handler?.newActivity = this
-        handler?.generate(this, findViewById(R.id.list_view))
+        handler?.generate(this, findViewById<ListView>(R.id.list_view))
 
 
     }
@@ -36,4 +37,5 @@ class CustomFormActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }}
+    }
+}

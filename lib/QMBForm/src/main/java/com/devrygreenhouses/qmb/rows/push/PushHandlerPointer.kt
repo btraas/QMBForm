@@ -2,12 +2,12 @@ package com.devrygreenhouses.qmb.rows.push
 
 import java.io.Serializable
 
-class PushHandlerPointer(handler: PushHandler): Serializable {
+class PushHandlerPointer(handler: PushHandler<*>): Serializable {
 
     companion object {
-        private var objects = HashMap<Int, PushHandler>()
+        private var objects = HashMap<Int, PushHandler<*>>()
 
-        private fun save(obj: PushHandler): Int {
+        private fun save(obj: PushHandler<*>): Int {
             val hash = obj.hashCode()
             objects[hash] = obj
             return hash
@@ -16,7 +16,7 @@ class PushHandlerPointer(handler: PushHandler): Serializable {
 
     val address: Int = save(handler)
 
-    fun retrieve(): PushHandler? {
+    fun retrieve(): PushHandler<*>? {
             if(objects.contains(address)) return objects[address]
             return null
     }
