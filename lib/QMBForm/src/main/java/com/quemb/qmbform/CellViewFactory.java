@@ -21,7 +21,7 @@ import com.quemb.qmbform.view.FormDetailHtmlTextVerticalFieldCell;
 import com.quemb.qmbform.view.FormDetailTextFieldCell;
 import com.quemb.qmbform.view.FormDetailTextInlineFieldCell;
 import com.quemb.qmbform.view.FormEditCurrencyFieldCell;
-import com.quemb.qmbform.view.FormEditCurrencyInlineFieldCell;
+import com.devrygreenhouses.qmb.FormEditCurrencyInlineFieldCell;
 import com.quemb.qmbform.view.FormEditEmailFieldCell;
 import com.quemb.qmbform.view.FormEditEmailInlineFieldCell;
 import com.quemb.qmbform.view.FormEditHTMLTextViewFieldCell;

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quemb.qmbform">
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name">
-        <activity android:name="com.devrygreenhouses.qmb.rows.push.CustomFormActivity"></activity>
+        <activity
+            android:name="com.devrygreenhouses.qmb.rows.push.CustomFormActivity"
+            />
     </application>
 
 </manifest>

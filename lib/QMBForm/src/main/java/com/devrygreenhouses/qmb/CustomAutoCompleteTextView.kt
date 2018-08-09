@@ -6,6 +6,7 @@ import android.content.res.TypedArray
 import android.graphics.Rect
 import android.os.Build
 import android.support.annotation.RequiresApi
+import android.support.v4.widget.PopupWindowCompat
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
@@ -14,12 +15,17 @@ import android.view.inputmethod.CorrectionInfo
 import android.view.inputmethod.EditorInfo
 import android.widget.AutoCompleteTextView
 import android.widget.ListPopupWindow
+import android.widget.PopupWindow
 import android.widget.Toast
+import com.quemb.qmbform.BuildConfig
 
 import java.lang.reflect.Field
 import java.lang.reflect.Array.setInt
 import java.lang.reflect.Modifier
-
+//
+//fun AutoCompleteTextView.setOverlapAnchor(overlap: Boolean) {
+//
+//}
 
 class CustomAutoCompleteTextView: AutoCompleteTextView {
 
@@ -62,13 +68,41 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
 
         var popupWindow = getPopupWindow()
 
-        val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet")
-        setFlag.isAccessible = true
-        setFlag.set(popupWindow, true)
 
-        val overlapFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchor")
-        overlapFlag.isAccessible = true
-        overlapFlag.set(popupWindow, overlap)
+        try {
+
+            if(Build.VERSION.SDK_INT >= 26) {
+                val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet") // doesn't exist in API 21...
+                setFlag.isAccessible = true
+                setFlag.set(popupWindow, true)
+
+                val overlapFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchor")
+                overlapFlag.isAccessible = true
+                overlapFlag.set(popupWindow, overlap)
+            } else if(Build.VERSION.SDK_INT >= 23) {
+
+
+                val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
+                                                                                            // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
+                field.isAccessible = true
+                val mPopup = field.get(popupWindow) as PopupWindow
+
+                mPopup.overlapAnchor = overlap
+            } else {
+                val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
+                // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
+                field.isAccessible = true
+                val mPopup = field.get(popupWindow) as PopupWindow
+
+                PopupWindowCompat.setOverlapAnchor(mPopup, overlap)
+            }
+
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
 
     }
 

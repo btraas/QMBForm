@@ -22,7 +22,7 @@ class SuggestionCell(context: Context, rowDescriptor: SuggestionRowDescriptor<*>
                      var adapter: ListAdapter)
         : FormEditTextFieldCell(context, rowDescriptor) {
 
-    lateinit var autoComplete: CustomAutoCompleteTextView
+    var autoComplete: CustomAutoCompleteTextView? = null
 
     var onSelect: ((SuggestionRowDescriptor<*>, Any) -> Unit)? = null
 
@@ -50,46 +50,50 @@ class SuggestionCell(context: Context, rowDescriptor: SuggestionRowDescriptor<*>
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        autoComplete = findViewById(R.id.editText)
-        autoComplete.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-        autoComplete.setOverlapAnchor(true)
-        autoComplete.setText(rowDescriptor.value?.value?.toString() ?: "")
-        autoComplete.onItemClickListener = object : AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
-            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                this.onItemSelected(parent, view, position, id)
+        if(autoComplete == null) {
+            autoComplete = findViewById(R.id.editText)
+            autoComplete?.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            autoComplete?.setOverlapAnchor(true)
+            autoComplete?.setText(rowDescriptor.value?.value?.toString() ?: "")
+            autoComplete?.onItemClickListener = object : AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+                override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    this.onItemSelected(parent, view, position, id)
 //                Toast.makeText(context, "item selected! $position", Toast.LENGTH_SHORT).show()
 //                val newItem = adapter.getItem(position)
 //                onSelect(rowDescriptor as SuggestionRowDescriptor<*>, newItem)
 //                rowDescriptor.value = Value(newItem)
 //                update()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    //Toast.makeText(context, "item selected! $position", Toast.LENGTH_SHORT).show()
+                    val newItem = adapter.getItem(position)
+                    onSelect?.invoke(rowDescriptor as SuggestionRowDescriptor<*>, newItem)
+                    rowDescriptor.value = Value(newItem)
+                    update()
+                }
+
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //Toast.makeText(context, "item selected! $position", Toast.LENGTH_SHORT).show()
-                val newItem = adapter.getItem(position)
-                onSelect?.invoke(rowDescriptor as SuggestionRowDescriptor<*>, newItem)
-                rowDescriptor.value = Value(newItem)
-                update()
-            }
-
-        }
-
-
 
 //        autoComplete.gravity = Gravity.START
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 //            autoComplete.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
 //        }
-        autoComplete.setAnchorView(anchorView, verticalOffset)
-        if(adapter is FilterableAdapter) {
-            autoComplete.setAdapter(adapter as FilterableAdapter)
-        } else {
-            autoComplete.setAdapter(adapter as ArrayAdapter<String>)
+            autoComplete?.setAnchorView(anchorView, verticalOffset)
+            if(adapter is FilterableAdapter) {
+                autoComplete?.setAdapter(adapter as FilterableAdapter)
+            } else {
+                autoComplete?.setAdapter(adapter as ArrayAdapter<String>)
+            }
         }
+
+
+
+
         //val anchor = autoComplete.getAnchorView()
         //print(anchorView.layoutParams)
     }
@@ -105,7 +109,7 @@ class SuggestionCell(context: Context, rowDescriptor: SuggestionRowDescriptor<*>
     }
 
     fun setAnchorView(view: View, verticalOffset: Int) {
-        autoComplete.setAnchorView(view, verticalOffset)
+        autoComplete?.setAnchorView(view, verticalOffset)
     }
 
     override fun update() {

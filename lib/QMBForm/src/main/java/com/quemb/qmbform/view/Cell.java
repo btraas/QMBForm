@@ -53,7 +53,7 @@ public abstract class Cell extends LinearLayout {
 
         int resource = getResource();
         if (resource > 0) {
-            inflate(getContext(), getResource(), getSuperViewForLayoutInflation());
+            inflate(getContext().getApplicationContext(), getResource(), getSuperViewForLayoutInflation());
         }
 
         if (shouldAddDivider()) {

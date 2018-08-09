@@ -25,8 +25,9 @@ android {
         versionCode 2
         versionName "1.1"
 
+        vectorDrawables.useSupportLibrary = true
         // Gradle Plugin 1.5 vectorDrawables support: stop the Gradle plugin’s automatic rasterization of vectors
-        generatedDensities = []
+        // generatedDensities = []
     }
     aaptOptions {
         // Gradle Plugin 1.5 vectorDrawables support: tell aapt to keep the attribute ids around

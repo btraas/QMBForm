@@ -71,7 +71,7 @@ class PushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val act
 
             valueTextView!!.text = "$str"
             valueTextView.invalidate()
-            Log.d("PushRowDescriptor", "Actual: " + this.cell.value.text.toString())
+            Log.d("PushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
 
             //this.cell = cell
             //cell?.findViewById<TextView>(R.id.textView)?.text = str
