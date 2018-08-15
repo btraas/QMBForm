@@ -5,7 +5,6 @@ import android.app.Activity
 import android.widget.ImageView
 import android.widget.Toast
 import com.devrygreenhouses.qmb.rows.push.PushHandler
-import com.devrygreenhouses.qmb.rows.push.PushRowDescriptor
 
 import com.quemb.qmbform.view.FormButtonFieldCell
 import com.quemb.qmbform.R
@@ -14,7 +13,7 @@ import com.quemb.qmbform.R
 /**
  * Created by pmaccamp on 8/28/2015.
  */
-class FinishCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: PushRowDescriptor<*>, val handler: PushHandler<T>, val value: T)
+class FinishCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedPushRowDescriptor<*>, val handler: PushHandler<T>, val value: T)
     : FormButtonFieldCell(activity, rowDescriptor) {
 
 

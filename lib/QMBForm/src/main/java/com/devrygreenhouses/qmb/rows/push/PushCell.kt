@@ -15,7 +15,7 @@ import com.quemb.qmbform.descriptor.Value
 /**
  * Created by pmaccamp on 8/28/2015.
  */
-class PushCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: PushRowDescriptor<T>, val handler: PushHandler<T>)
+class PushCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedPushRowDescriptor<T>, val handler: PushHandler<T>)
     : FormButtonFieldCell(activity, rowDescriptor) {
 
 

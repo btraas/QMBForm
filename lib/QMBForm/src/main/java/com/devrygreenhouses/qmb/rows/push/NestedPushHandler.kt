@@ -22,7 +22,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,titl
 //        this.rootElement = rootElement
 //    }
 
-    open fun createViewForElement(rowDescriptor: PushRowDescriptor<T>, element: T): Cell {
+    open fun createViewForElement(rowDescriptor: NestedPushRowDescriptor<T>, element: T): Cell {
         val isFolder = element.isFolder()
         var cell = when {
             isFolder -> PushCell(oldActivity, rowDescriptor, this)
@@ -47,7 +47,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,titl
             val groupSection = SectionDescriptor.newInstance("section", groupTitle)
 
             for(subFolder in subFolders) {
-                val row = PushRowDescriptor<T>(subFolder.toString(), subFolder.toString(), oldActivity,
+                val row = NestedPushRowDescriptor<T>(subFolder.toString(), subFolder.toString(), oldActivity,
                         this.cloneFor(newActivity!!, subFolder.toString(), subFolder as T), subFolder as T)
                 groupSection.addRow(row)
                 //row.addNested(subFolder as T)
@@ -61,7 +61,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,titl
 
             if(simpleRows.count() > 0) {
                 for(simple in simpleRows) {
-                    val row = PushRowDescriptor<T>(simple.toString(), simple.toString(), oldActivity,
+                    val row = NestedPushRowDescriptor<T>(simple.toString(), simple.toString(), oldActivity,
                             this.cloneFor(newActivity!!, simple.toString(), simple as T), simple as T)
                     groupSection.addRow(row)
                     //row.addNested(subFolder as T)

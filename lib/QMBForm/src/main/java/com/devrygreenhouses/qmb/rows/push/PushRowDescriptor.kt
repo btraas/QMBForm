@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.push_field_cell.view.*
  * Can't pass element because there may not be a root element.
  *
  */
-class PushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val activity: Activity,
+class NestedPushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val activity: Activity,
                                                 val handler: NestedPushHandler<T>, val rootElement: T)
     : RowDescriptor<T>(), CustomCellViewFactory, Cloneable {
 
@@ -56,22 +56,22 @@ class PushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val act
     }
 
     override fun setValue(value: Value<T>?) {
-        Log.d("PushRowDescriptor", "setValue(${value?.value})")
+        Log.d("NestedPushRowDescriptor", "setValue(${value?.value})")
 
         super.setValue(value)
         val str = value?.value?.toString()
         if(this.cell !is PushCell<*>) {
-            Log.w("PushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
+            Log.w("NestedPushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
             return
         }
         val cell = this.cell as PushCell<T>
         val valueTextView = (cell).findViewById<TextView>(R.id.value)
         activity.runOnUiThread {
-            Log.d("PushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
+            Log.d("NestedPushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
 
             valueTextView!!.text = "$str"
             valueTextView.invalidate()
-            Log.d("PushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
+            Log.d("NestedPushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
 
             //this.cell = cell
             //cell?.findViewById<TextView>(R.id.textView)?.text = str

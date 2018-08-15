@@ -66,7 +66,7 @@ abstract class PushHandler<T: NestedElement<*>>(val oldActivity: Activity, val t
 
     }
 
-//    fun select(row: PushRowDescriptor<T>) {
+//    fun select(row: NestedPushRowDescriptor<T>) {
 //        this.onFormRowClick(row)
 //    }
 //
