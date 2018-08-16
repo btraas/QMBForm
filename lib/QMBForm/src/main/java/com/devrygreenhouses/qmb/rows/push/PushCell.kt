@@ -4,19 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.widget.TextView
-import android.widget.Toast
+import com.devrygreenhouses.qmb.rows.push.nested.NestedElement
+import com.devrygreenhouses.qmb.rows.push.nested.NestedPushRowDescriptor
 
 import com.quemb.qmbform.view.FormButtonFieldCell
 import com.quemb.qmbform.R
-import com.quemb.qmbform.descriptor.CellDescriptor
-import com.quemb.qmbform.descriptor.Value
+import kotlin.reflect.KClass
 
 @SuppressLint("ViewConstructor")
 /**
  * Created by pmaccamp on 8/28/2015.
  */
-class PushCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedPushRowDescriptor<T>, val handler: PushHandler<T>)
-    : FormButtonFieldCell(activity, rowDescriptor) {
+class PushCell<ActivityT: Activity>(oldActivity: Activity, newActivityClass: KClass<ActivityT>, rowDescriptor: PushRowDescriptor<*>, val handler: PushHandler<*>)
+    : FormButtonFieldCell(oldActivity, rowDescriptor) {
 
 
 //    var filterAdapter: FilterableAdapter?
@@ -28,10 +28,10 @@ class PushCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedPus
 //            Toast.makeText(activity, "moving to new activity", Toast.LENGTH_SHORT).show()
 
 
-            val intent = Intent(activity, CustomFormActivity::class.java)
+            val intent = Intent(oldActivity, newActivityClass.java)
 
             intent.putExtra("handler", PushHandlerPointer(handler))
-            activity.startActivityForResult(intent,1 )
+            oldActivity.startActivityForResult(intent,1 )
 
 
         }

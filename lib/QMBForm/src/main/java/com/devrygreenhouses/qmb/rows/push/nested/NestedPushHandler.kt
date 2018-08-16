@@ -1,17 +1,64 @@
-package com.devrygreenhouses.qmb.rows.push
+package com.devrygreenhouses.qmb.rows.push.nested
 
 import android.app.Activity
 import android.support.v4.content.ContextCompat
+import android.util.Log
+import android.widget.ListView
 import android.widget.TextView
 import com.devrygreenhouses.qmb.ReflectionTools
+import com.devrygreenhouses.qmb.rows.push.CustomFormActivity
+import com.devrygreenhouses.qmb.rows.push.PushCell
+import com.devrygreenhouses.qmb.rows.push.PushHandler
+import com.quemb.qmbform.FormManager
+import com.quemb.qmbform.OnFormRowClickListener
 import com.quemb.qmbform.R
 import com.quemb.qmbform.descriptor.*
 import com.quemb.qmbform.view.Cell
-import kotlinx.android.synthetic.main.finish_field_cell.view.*
 
 
-abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,title: String, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
-    : PushHandler<T>(oldActivity, title, valueChangedListener) {
+abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
+    : PushHandler<CustomFormActivity>(oldActivity, title, valueChangedListener), OnFormRowClickListener {
+
+    private val TAG = "NestedPushHandler"
+    var _rows: List<RowDescriptor<*>> = ArrayList()
+    var selected: T? = null
+
+    var mFormManager: FormManager? = null
+    var form: FormDescriptor? = null
+
+
+
+    override fun generate(activity: CustomFormActivity) {
+
+        newActivity = activity
+
+        val listView = activity.findViewById<ListView>(R.id.list_view)
+
+        Log.d(TAG, "building form")
+
+
+        //this.newActivity = activity
+        form = buildForm()
+
+        Log.d(TAG, "showing form")
+
+        mFormManager = FormManager()
+        mFormManager?.setup(form, listView, activity)
+        mFormManager?.onFormRowClickListener = this
+        mFormManager?.setOnFormRowValueChangedListener(valueChangedListener)
+
+
+        Log.d(TAG, "invoking callback")
+
+
+        onPresent(oldActivity, activity)
+
+
+    }
+
+    override fun onPresent(oldActivity: Activity, newActivity: CustomFormActivity) {
+
+    }
 
     abstract fun cloneFor(oldActivity: Activity, title: String, rootElement: T): NestedPushHandler<T>
 
@@ -25,7 +72,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,titl
     open fun createViewForElement(rowDescriptor: NestedPushRowDescriptor<T>, element: T): Cell {
         val isFolder = element.isFolder()
         var cell = when {
-            isFolder -> PushCell(oldActivity, rowDescriptor, this)
+            isFolder -> PushCell(oldActivity, CustomFormActivity::class, rowDescriptor, this)
             else -> FinishCell<T>(oldActivity, rowDescriptor, this, element)
         }
         cell.findViewById<TextView>(R.id.textView)
@@ -34,7 +81,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity,titl
         return cell
     }
 
-    override fun buildForm(): FormDescriptor {
+    fun buildForm(): FormDescriptor {
 
         val form = FormDescriptor()
         val subFolders = rootElement.getSubFolders()

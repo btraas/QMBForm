@@ -10,19 +10,23 @@ import com.devrygreenhouses.qmb.rows.push.nested.NestedPushHandler
 import com.quemb.qmbform.R
 
 
-class CustomFormActivity : AppCompatActivity() {
+class CustomFragmentActivity : AppCompatActivity() {
 
-    var handler: NestedPushHandler<*>? = null
+    var handler: FragmentPushHandler? = null
 
     private val TAG = "CustomFormActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_custom_push)
-
         Log.d(TAG, "onCreate")
 
-        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as NestedPushHandler<*>
+
+        setContentView(R.layout.activity_custom_fragment)
+
+
+
+
+        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as FragmentPushHandler
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = handler?.title

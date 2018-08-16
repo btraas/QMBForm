@@ -1,12 +1,12 @@
-package com.devrygreenhouses.qmb.rows.push
+package com.devrygreenhouses.qmb.rows.push.nested
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory
-import com.devrygreenhouses.qmb.rows.push.nested.NestedElement
-import com.devrygreenhouses.qmb.rows.push.nested.NestedPushHandler
+import com.devrygreenhouses.qmb.rows.push.PushCell
+import com.devrygreenhouses.qmb.rows.push.PushRowDescriptor
 import com.quemb.qmbform.annotation.FormValidator
 import com.quemb.qmbform.descriptor.RowDescriptor
 import com.quemb.qmbform.view.Cell
@@ -18,9 +18,9 @@ import com.quemb.qmbform.descriptor.Value
  * Can't pass element because there may not be a root element.
  *
  */
-abstract class PushRowDescriptor<T>(tag: String, title: String, val activity: Activity,
-                                                      val handler: PushHandler<*>)
-    : RowDescriptor<T>(), CustomCellViewFactory, Cloneable {
+class NestedPushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, activity: Activity,
+                                                                                             handler: NestedPushHandler<T>, val rootElement: T)
+    : PushRowDescriptor<T>(tag, title, activity, handler), CustomCellViewFactory, Cloneable {
 
 //    var createCallback: ((Activity, Activity) -> Unit)? = null
 
@@ -32,30 +32,45 @@ abstract class PushRowDescriptor<T>(tag: String, title: String, val activity: Ac
 //        this.value = value
     }
 
+    override fun createView(ctx: Context): Cell {
+        //val row = this as RowDescriptor<*>
 
 
-//    override fun setValue(value: Value<T>?) {
-//        Log.d("NestedPushRowDescriptor", "setValue(${value?.value})")
-//
-//        super.setValue(value)
-//        val str = value?.value?.toString()
-//        if(this.cell !is PushCell<*>) {
-//            Log.w("NestedPushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
-//            return
-//        }
-//        val cell = this.cell as PushCell<T>
-//        val valueTextView = (cell).findViewById<TextView>(R.id.value)
-//        activity.runOnUiThread {
-//            Log.d("NestedPushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
-//
-//            valueTextView!!.text = "$str"
-//            valueTextView.invalidate()
-//            Log.d("NestedPushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
-//
-//            //this.cell = cell
-//            //cell?.findViewById<TextView>(R.id.textView)?.text = str
-//        }
-//    }
+        val cell = (handler as NestedPushHandler<T>).createViewForElement(this, rootElement)
+
+        cell.findViewById<TextView>(R.id.textView).apply {
+            text = title
+//            setTextColor(ContextCompat.getColor(activity, android.R.color.holo_blue_dark))
+
+        }
+
+        return cell
+
+
+    }
+
+    override fun setValue(value: Value<T>?) {
+        Log.d("NestedPushRowDescriptor", "setValue(${value?.value})")
+
+        super.setValue(value)
+        val str = value?.value?.toString()
+        if(this.cell !is PushCell<*>) {
+            Log.w("NestedPushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
+            return
+        }
+        val cell = this.cell as PushCell<*>
+        val valueTextView = (cell).findViewById<TextView>(R.id.value)
+        activity.runOnUiThread {
+            Log.d("NestedPushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
+
+            valueTextView!!.text = "$str"
+            valueTextView.invalidate()
+            Log.d("NestedPushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
+
+            //this.cell = cell
+            //cell?.findViewById<TextView>(R.id.textView)?.text = str
+        }
+    }
 
 //    fun isFolder(obj: T, getShallowChildren: ((T) -> List<T>)): Boolean {
 //        val children = getShallowChildren(obj)
