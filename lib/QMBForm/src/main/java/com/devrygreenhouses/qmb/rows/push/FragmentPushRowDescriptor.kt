@@ -2,6 +2,7 @@ package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -20,8 +21,8 @@ import com.quemb.qmbform.descriptor.Value
  * Can't pass element because there may not be a root element.
  *
  */
-class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, activity: Activity,
-                                                handler: FragmentPushHandler)
+class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, val subtitle: String?, val icon: Drawable?, activity: Activity,
+                                             handler: FragmentPushHandler)
     : PushRowDescriptor<T>(tag, title, activity, handler), CustomCellViewFactory, Cloneable {
 
 //    var createCallback: ((Activity, Activity) -> Unit)? = null
@@ -38,12 +39,10 @@ class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, activit
         //val row = this as RowDescriptor<*>
 
 
-        val cell = PushCell(activity, CustomFragmentActivity::class, this, handler)
+        val cell = PushCell(activity, CustomFragmentActivity::class, this, handler, icon, subtitle)
 
         cell.findViewById<TextView>(R.id.textView).apply {
             text = title
-            setTextColor(ContextCompat.getColor(activity, android.R.color.holo_blue_dark))
-
         }
 
         return cell

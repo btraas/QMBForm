@@ -2,6 +2,7 @@ package com.devrygreenhouses.qmb.rows.push.nested
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory
@@ -18,8 +19,8 @@ import com.quemb.qmbform.descriptor.Value
  * Can't pass element because there may not be a root element.
  *
  */
-class NestedPushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, activity: Activity,
-                                                                                             handler: NestedPushHandler<T>, val rootElement: T)
+class NestedPushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, val icon: Drawable?, activity: Activity,
+                                                   handler: NestedPushHandler<T>, val rootElement: T)
     : PushRowDescriptor<T>(tag, title, activity, handler), CustomCellViewFactory, Cloneable {
 
 //    var createCallback: ((Activity, Activity) -> Unit)? = null

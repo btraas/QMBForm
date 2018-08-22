@@ -43,7 +43,9 @@ public class FormDetailTextInlineFieldCell extends FormTitleFieldCell {
                     editTextAppearanceId, android.R.attr.textSize, 18f * (displayMetrics.densityDpi / 160f));
 
             // Set inline text size
-            mDetailTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, editSize);
+            //mDetailTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, editSize);
+
+            // Brayden commented out Aug 2018 because it's ugly and doesn't make sense
         }
     }
 

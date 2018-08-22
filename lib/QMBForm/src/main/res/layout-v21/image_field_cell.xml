@@ -11,7 +11,6 @@
     android:id="@+id/cell"
     android:clickable="true"
     android:focusable="true"
-    android:focusableInTouchMode="true"
     >
 
 
@@ -35,7 +34,7 @@
         android:layout_weight="1"
         android:scaleType="fitCenter"
         android:tint="#ccc"
-        app:srcCompat="@drawable/ic_add_a_photo"
+        android:src="@drawable/ic_add_a_photo"
         android:background="?android:attr/selectableItemBackground"
         tools:ignore="VectorDrawableCompat"
         android:focusable="false"

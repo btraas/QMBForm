@@ -125,6 +125,47 @@ public abstract class Cell extends LinearLayout {
         mDividerView = dividerView;
     }
 
+    protected boolean setHint(final TextView textView, final String placeholderConfig, final String placeholderColorConfig) {
+        HashMap<String,Object> cellConfig = null;
+
+
+        FormItemDescriptor itemDescriptor = getFormItemDescriptor();
+        if (itemDescriptor != null)
+        {
+            cellConfig = itemDescriptor.getCellConfig();
+
+            if (cellConfig != null && cellConfig.containsKey(placeholderColorConfig))
+            {
+
+
+                Object configId = cellConfig.get(placeholderColorConfig);
+                if (configId instanceof Integer)
+                {
+                    // Apply placeholder color if exists
+
+                    textView.setHintTextColor((Integer)configId);
+
+                }
+            }
+
+            if (cellConfig != null && cellConfig.containsKey(placeholderConfig))
+            {
+                Object configId = cellConfig.get(placeholderConfig);
+                if (configId instanceof String)
+                {
+                    // Apply placeholder if exists
+
+                    textView.setHint((String)configId);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+
     // ===== Colors ===========
 
     /**
@@ -204,7 +245,7 @@ public abstract class Cell extends LinearLayout {
      * Set the TextView color from the cellConfig using 'colorConfig' parameter, if defined in CellDescriptor.
      * Only used for COLOR_XXX_DISABLED colors.
      */
-    protected void setTextColor(final TextView textView, final String colorConfig)
+    public void setTextColor(final TextView textView, final String colorConfig)
     {
         // Get color from the cellConfig in FormItemDescriptor
 

@@ -2,16 +2,19 @@ package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory
 import com.devrygreenhouses.qmb.rows.push.nested.NestedElement
 import com.devrygreenhouses.qmb.rows.push.nested.NestedPushHandler
+import com.quemb.qmbform.CellViewFactory
 import com.quemb.qmbform.annotation.FormValidator
 import com.quemb.qmbform.descriptor.RowDescriptor
 import com.quemb.qmbform.view.Cell
 import java.util.ArrayList
 import com.quemb.qmbform.R
+import com.quemb.qmbform.descriptor.CellDescriptor
 import com.quemb.qmbform.descriptor.Value
 
 /**
@@ -30,6 +33,10 @@ abstract class PushRowDescriptor<T>(tag: String, title: String, val activity: Ac
         this.mTag = tag
 //        this.mRowType = rowType
 //        this.value = value
+    }
+
+    override fun onViewCreated(cell: Cell) {
+        cell.setTextColor(cell.findViewById<TextView>(R.id.textView), CellDescriptor.PUSH_COLOR_LABEL)
     }
 
 

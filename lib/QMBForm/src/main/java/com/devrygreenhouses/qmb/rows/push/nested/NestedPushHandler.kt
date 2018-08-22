@@ -1,6 +1,7 @@
 package com.devrygreenhouses.qmb.rows.push.nested
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.ListView
@@ -16,7 +17,7 @@ import com.quemb.qmbform.descriptor.*
 import com.quemb.qmbform.view.Cell
 
 
-abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
+abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val getIconFor: (T) -> Drawable?, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
     : PushHandler<CustomFormActivity>(oldActivity, title, valueChangedListener), OnFormRowClickListener {
 
     private val TAG = "NestedPushHandler"
@@ -72,7 +73,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
     open fun createViewForElement(rowDescriptor: NestedPushRowDescriptor<T>, element: T): Cell {
         val isFolder = element.isFolder()
         var cell = when {
-            isFolder -> PushCell(oldActivity, CustomFormActivity::class, rowDescriptor, this)
+            isFolder -> PushCell(oldActivity, CustomFormActivity::class, rowDescriptor, this, getIconFor(element))
             else -> FinishCell<T>(oldActivity, rowDescriptor, this, element)
         }
         cell.findViewById<TextView>(R.id.textView)
@@ -94,7 +95,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
             val groupSection = SectionDescriptor.newInstance("section", groupTitle)
 
             for(subFolder in subFolders) {
-                val row = NestedPushRowDescriptor<T>(subFolder.toString(), subFolder.toString(), oldActivity,
+                val row = NestedPushRowDescriptor<T>(subFolder.toString(), subFolder.toString(), getIconFor(subFolder as T), oldActivity,
                         this.cloneFor(newActivity!!, subFolder.toString(), subFolder as T), subFolder as T)
                 groupSection.addRow(row)
                 //row.addNested(subFolder as T)
@@ -108,7 +109,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
 
             if(simpleRows.count() > 0) {
                 for(simple in simpleRows) {
-                    val row = NestedPushRowDescriptor<T>(simple.toString(), simple.toString(), oldActivity,
+                    val row = NestedPushRowDescriptor<T>(simple.toString(), simple.toString(), getIconFor(simple as T), oldActivity,
                             this.cloneFor(newActivity!!, simple.toString(), simple as T), simple as T)
                     groupSection.addRow(row)
                     //row.addNested(subFolder as T)
