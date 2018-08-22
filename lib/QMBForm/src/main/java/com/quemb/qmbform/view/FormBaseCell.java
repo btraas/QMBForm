@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.quemb.qmbform.OnFormRowClickListener;
 import com.quemb.qmbform.R;
@@ -42,6 +43,24 @@ public abstract class FormBaseCell extends Cell {
     @Override
     protected void init() {
         super.init();
+
+        if(getRowDescriptor().getRequired()) {
+            TextView newView = new TextView(this.getContext());
+
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            newView.setLayoutParams(lp);
+            newView.setText("*");
+            newView.setTextSize(12);
+            newView.setTextColor(Color.RED);
+            newView.setPadding(0,0,10,0);
+
+            ViewGroup root = (ViewGroup)getRootView();
+
+            ViewGroup ll = (ViewGroup)root.getChildAt(0);
+
+            ll.addView(newView, 0);
+        }
 
         if (getRowDescriptor() != null && getRowDescriptor().getValue() != null) {
             getRowDescriptor().getValue().setOnValueChangeListener(new OnValueChangeListener() {

@@ -16,6 +16,10 @@ import com.quemb.qmbform.R
 import com.quemb.qmbform.descriptor.Value
 
 /**
+ *
+ * Used for selecting an element, which can be nested in subfolders recursively.
+ *
+ * Note:
  * Can't pass element because there may not be a root element.
  *
  */

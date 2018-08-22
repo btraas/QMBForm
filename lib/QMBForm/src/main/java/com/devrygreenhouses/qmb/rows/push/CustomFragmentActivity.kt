@@ -9,11 +9,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.widget.Toast
-import com.devrygreenhouses.qmb.rows.image.ImageCell
 import com.devrygreenhouses.qmb.rows.image.ImageReceiver
-import android.R.attr.bitmap
-import android.graphics.BitmapFactory
 import android.provider.MediaStore
+import android.support.v4.app.Fragment
+import android.view.Menu
+import android.view.MenuItem
+import com.devrygreenhouses.qmb.rows.image.ImageCell
+import com.devrygreenhouses.qmb.rows.push.fragment.FragmentPushHandler
 import java.io.IOException
 
 
@@ -32,8 +34,6 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
         setContentView(R.layout.activity_custom_fragment)
 
 
-
-
         handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as FragmentPushHandler
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -45,6 +45,31 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
         handler?.generate(this)
 
 
+
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+//        menu?.add(0,0,0,"Submit")
+
+        menuInflater.inflate(R.menu.save, menu)
+
+
+
+        return true
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.save -> {
+                finish()
+//                val fragment = supportFragmentManager.findFragmentById(R.id.fragment)
+//                fragment.
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

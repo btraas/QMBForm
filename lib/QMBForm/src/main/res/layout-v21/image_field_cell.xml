@@ -11,6 +11,8 @@
     android:id="@+id/cell"
     android:clickable="true"
     android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+
     >
 
 

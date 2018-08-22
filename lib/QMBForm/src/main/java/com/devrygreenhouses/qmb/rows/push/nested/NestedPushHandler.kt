@@ -17,8 +17,8 @@ import com.quemb.qmbform.descriptor.*
 import com.quemb.qmbform.view.Cell
 
 
-abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val getIconFor: (T) -> Drawable?, val rootElement: T, valueChangedListener: OnFormRowValueChangedListener)
-    : PushHandler<CustomFormActivity>(oldActivity, title, valueChangedListener), OnFormRowClickListener {
+abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val getIconFor: (T) -> Drawable?, val rootElement: T, val valueChangedListener: OnFormRowValueChangedListener)
+    : PushHandler<CustomFormActivity>(oldActivity, title), OnFormRowClickListener {
 
     private val TAG = "NestedPushHandler"
     var _rows: List<RowDescriptor<*>> = ArrayList()

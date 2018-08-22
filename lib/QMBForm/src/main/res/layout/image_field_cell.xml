@@ -12,6 +12,8 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:descendantFocusability="blocksDescendants"
+
     >
 
 

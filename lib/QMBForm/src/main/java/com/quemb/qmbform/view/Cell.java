@@ -56,6 +56,8 @@ public abstract class Cell extends LinearLayout {
             inflate(getContext().getApplicationContext(), getResource(), getSuperViewForLayoutInflation());
         }
 
+
+
         if (shouldAddDivider()) {
             addView(getDividerView());
         }

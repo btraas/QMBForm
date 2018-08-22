@@ -6,7 +6,7 @@ import java.io.Serializable
 
 
 abstract class PushHandler<NewActivityT: Activity>(val oldActivity: Activity,
-                                                val title: String, val valueChangedListener: OnFormRowValueChangedListener)
+                                                val title: String)
     : Serializable {
 
     private val TAG = "PushHandler"

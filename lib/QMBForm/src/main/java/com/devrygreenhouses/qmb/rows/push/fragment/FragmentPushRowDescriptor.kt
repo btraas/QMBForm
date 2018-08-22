@@ -1,27 +1,27 @@
-package com.devrygreenhouses.qmb.rows.push
+package com.devrygreenhouses.qmb.rows.push.fragment
 
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory
+import com.devrygreenhouses.qmb.rows.push.CustomFragmentActivity
 import com.devrygreenhouses.qmb.rows.push.PushCell
 import com.devrygreenhouses.qmb.rows.push.PushRowDescriptor
 import com.quemb.qmbform.annotation.FormValidator
-import com.quemb.qmbform.descriptor.RowDescriptor
 import com.quemb.qmbform.view.Cell
 import java.util.ArrayList
 import com.quemb.qmbform.R
 import com.quemb.qmbform.descriptor.Value
 
 /**
- * Can't pass element because there may not be a root element.
+ * Used for showing a custom fragment. Not quite sure what to return yet.
+ *
+ * This is used for scanning.
  *
  */
-class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, val subtitle: String?, val icon: Drawable?, activity: Activity,
+open class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, val subtitle: String?, val icon: Drawable?, activity: Activity,
                                              handler: FragmentPushHandler)
     : PushRowDescriptor<T>(tag, title, activity, handler), CustomCellViewFactory, Cloneable {
 

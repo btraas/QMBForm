@@ -2,7 +2,6 @@ package com.devrygreenhouses.qmb.rows.image
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,18 +15,22 @@ import com.quemb.qmbform.view.FormButtonFieldCell
 import com.quemb.qmbform.R
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.content.ContextCompat.checkSelfPermission
-import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.app.ActivityCompat.requestPermissions
 import android.view.View
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v7.app.AlertDialog
+import com.devrygreenhouses.qmb.rows.image.ImageReceiver
+import com.devrygreenhouses.qmb.rows.image.ImageRowDescriptor
+import com.quemb.qmbform.descriptor.CellDescriptor
+import com.quemb.qmbform.descriptor.Value
+import kotlinx.android.synthetic.main.finish_field_cell.view.*
 
 
 @SuppressLint("ViewConstructor")
+open
 /**
  * Created by pmaccamp on 8/28/2015.
  */
-class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageReceiver: ImageReceiver)
+class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageReceiver: ImageReceiver?)
     : FormButtonFieldCell(context, rowDescriptor) {
 
 
@@ -38,25 +41,22 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
         public const val CUSTOM_CAMERA_PERMISSION_CODE = 100
     }
 
-//    private val cameraReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//
-//            val photo = intent?.extras?.get("data") as? Bitmap?
-//            receivedBitmap(context,photo)
-//        }
-//
-//    }
+
+    //private var _image: Bitmap? = null
+
+    public var image: Bitmap?
+        get() = rowDescriptor.value?.value as? Bitmap?
+        set(value) {
+            if(rowDescriptor.value?.value != value) {
+                rowDescriptor.value = Value(value)
+                requestLayout()
+            }
+        }
 
 
 
-
-
-//    var filterAdapter: FilterableAdapter?
-//    var arrayAdapter: ArrayAdapter<String>?
-
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
 
         this.setOnClickListener {
 
@@ -71,41 +71,56 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
             this.performClick()
         }
 
-//        this.findViewById<View>(R.id.cell).setOnClickListener {
-//            Toast.makeText(mActivity, "on cell click", Toast.LENGTH_LONG).show()
-//
-//            this.performClick()
-//        }
 
+        image?.let {
+            _applyBitmap(it)
+        }
 
+        rowDescriptor.cellConfig?.let { config ->
+            (config[CellDescriptor.COLOR_LABEL] as? Int?)?.let { labelColor ->
+                setTextColor(findViewById<TextView>(R.id.textView), CellDescriptor.COLOR_LABEL)
+            }
+        }
 
     }
+
 
     override fun getResource(): Int {
         return R.layout.image_field_cell
     }
 
+    // Done the other directions now
+//    override fun onValueChanged(newValue: Value<*>?) {
+//        super.onValueChanged(newValue)
+//
+//        if(newValue?.value is Bitmap) {
+//            _applyBitmap(newValue.value as Bitmap)
+//        }
+//    }
+
+
+    protected fun _applyBitmap(bitmap: Bitmap) {
+
+        mActivity.runOnUiThread {
+            this.findViewById<ImageView>(R.id.imageView).apply {
+
+                setImageBitmap(bitmap)
+                colorFilter = null
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    imageTintList = null
+                }
+
+                scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+        }
+    }
+
     override fun onClick(v: View?) {
 
-        //Toast.makeText(mActivity, "should open camera now", Toast.LENGTH_LONG).show()
-
-//        val intentFilter = IntentFilter(IMAGE_RECEIVED)
-//        LocalBroadcastManager.getInstance(mActivity).registerReceiver(cameraReceiver, intentFilter)
-
-        imageReceiver.onReceiveBitmap = { bitmap ->
+        imageReceiver?.onReceiveBitmap = { bitmap ->
             if(bitmap != null) {
-                mActivity.runOnUiThread {
-                    this.findViewById<ImageView>(R.id.imageView).apply {
-
-                        setImageBitmap(bitmap)
-                        colorFilter = null
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            imageTintList = null
-                        }
-
-                        scaleType = ImageView.ScaleType.CENTER_CROP
-                    }
-                }
+                rowDescriptor.value = (Value(bitmap))
+                _applyBitmap(bitmap)
             }
         }
 
@@ -136,17 +151,6 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
                     }
                 }
             }
-//            builder.setPositiveButton("Camera") { a,b ->
-//                val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-//                startActivityForResult(mActivity, cameraIntent, CAMERA_REQUEST, null)
-//
-//            }
-//            builder.setNeutralButton("Gallery"){ a,b ->
-//                val intent = Intent()
-//                intent.type = "image/*"
-//                intent.action = Intent.ACTION_GET_CONTENT
-//                startActivityForResult(mActivity, Intent.createChooser(intent, "Select Picture"), CAMERA_REQUEST, null)
-//            }
 
 
             builder.show()
@@ -154,57 +158,7 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
         }
 
 
-
-
-
     }
-//
-//    fun receivedBitmap(context: Context?, bitmap: Bitmap?) {
-//
-//        if(bitmap != null) {
-//            mActivity.runOnUiThread {
-//                this.findViewById<ImageView>(R.id.imageView).apply {
-//                    setImageBitmap(bitmap)
-//                    scaleType = ImageView.ScaleType.CENTER_CROP
-//                }
-//            }
-//        }
-//
-//    }
-
-//
-//    override fun update() {
-//
-//        super.update()
-//
-//        updateEditView()
-//
-////        if (rowDescriptor.disabled!!) {
-////            mEditView.setEnabled(false)
-////            setTextColor(mEditView, CellDescriptor.COLOR_VALUE_DISABLED)
-////        } else
-////            mEditView.setEnabled(true)
-//
-//    }
-//
-//    protected fun updateEditView() {
-//
-////        val hint = rowDescriptor.getHint(context)
-////        if (hint != null) {
-////            mEditView.setHint(hint)
-////        }
-//
-//
-//
-//        val value = rowDescriptor.value?.value?.toString() ?: "" // as Value<String>
-//        this.findViewById<TextView>(R.id.value).text = value
-////        if (value != null && value.value != null) {
-////            val valueString = value.value
-////            mEditView.setText(valueString)
-////        }
-//
-//    }
-
 
 
 

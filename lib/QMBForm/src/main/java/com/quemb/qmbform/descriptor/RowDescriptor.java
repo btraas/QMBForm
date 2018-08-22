@@ -96,6 +96,14 @@ public class RowDescriptor<T> extends FormItemDescriptor {
 
     private boolean mLastRowInSection = false;
 
+//    private boolean required = false;
+//    public void setRequired(boolean value) {
+//        required = value;
+//    }
+//    public boolean isRequired() {
+//        return required;
+//    }
+
     public static RowDescriptor newInstance(String tag) {
 
         return RowDescriptor.newInstance(tag, FormRowDescriptorTypeDetailInline);
