@@ -27,6 +27,10 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
     var mFormManager: FormManager? = null
     var form: FormDescriptor? = null
 
+    override fun canPresent(): Boolean {
+        return true
+    }
+
 
 
     override fun generate(activity: CustomFormActivity) {

@@ -22,6 +22,9 @@ abstract class PushHandler<NewActivityT: Activity>(val oldActivity: Activity,
 
     //abstract protected fun buildForm(): FormDescriptor
 
+
+    abstract fun canPresent(): Boolean
+
     abstract fun onPresent(oldActivity: Activity, newActivity: NewActivityT)
     abstract fun generate(activity: NewActivityT)
 

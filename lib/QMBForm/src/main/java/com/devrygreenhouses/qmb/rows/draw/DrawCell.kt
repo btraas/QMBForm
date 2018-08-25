@@ -41,7 +41,7 @@ class DrawCell(val activity: Activity, rowDescriptor: ImageRowDescriptor)
 
 
 
-    val handler = FragmentPushHandler(activity, rowDescriptor.title) {
+    val handler = FragmentPushHandler(activity, rowDescriptor.title, { true }) {
 
         val newFragment = DrawFragment()
         newFragment.onSave = {

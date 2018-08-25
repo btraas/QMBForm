@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
+import com.devrygreenhouses.qmb.FormFinishDelegate
 import com.devrygreenhouses.qmb.rows.image.ImageCell
 import com.devrygreenhouses.qmb.rows.push.fragment.FragmentPushHandler
 import java.io.IOException
@@ -64,7 +65,12 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.save -> {
-                finish()
+                val fragment = supportFragmentManager.findFragmentById(R.id.fragment)
+                if(fragment is FormFinishDelegate) {
+                    fragment.finishForm()
+                } else {
+                    finish()
+                }
 //                val fragment = supportFragmentManager.findFragmentById(R.id.fragment)
 //                fragment.
             }
@@ -88,21 +94,6 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
 
             }
 
-//            if(imageData == null) {
-//                val selectedImage = data?.getData()
-//                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-//
-//                val cursor = contentResolver.query(selectedImage,
-//                        filePathColumn, null, null, null)
-//                cursor!!.moveToFirst()
-//
-//                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-//                val picturePath = cursor.getString(columnIndex)
-//                cursor.close()
-//
-//                imageData = BitmapFactory.decodeFile(picturePath)
-//
-//            }
 
             runOnUiThread {
                 imageData?.let {
@@ -110,10 +101,6 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
                 }
             }
 
-
-//            val newIntent = Intent(ImageCell.IMAGE_RECEIVED)
-//            newIntent.putExtra("data", imageData)
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(data)
         }
 
     }

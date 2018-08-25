@@ -27,6 +27,10 @@ class PushCell<ActivityT: Activity>(val oldActivity: Activity, val newActivityCl
 //    var filterAdapter: FilterableAdapter?
 //    var arrayAdapter: ArrayAdapter<String>?
 
+    companion object {
+        val CODE_FORM_COMPLETED = 3224
+    }
+
 
     init {
         this.setOnClickListener {
@@ -61,10 +65,15 @@ class PushCell<ActivityT: Activity>(val oldActivity: Activity, val newActivityCl
 
     fun onClick() {
 
-        val intent = Intent(oldActivity, newActivityClass.java)
+        val canPresent = handler.canPresent()
 
-        intent.putExtra("handler", PushHandlerPointer(handler))
-        oldActivity.startActivityForResult(intent,1 )
+        if(canPresent) {
+            val intent = Intent(oldActivity, newActivityClass.java)
+
+            intent.putExtra("handler", PushHandlerPointer(handler))
+            oldActivity.startActivityForResult(intent, CODE_FORM_COMPLETED)
+        }
+
 
     }
 
