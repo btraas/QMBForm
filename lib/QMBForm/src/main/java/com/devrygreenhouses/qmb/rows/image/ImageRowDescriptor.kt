@@ -7,9 +7,10 @@ import com.devrygreenhouses.qmb.CustomCellViewFactory
 import com.quemb.qmbform.annotation.FormValidator
 import com.quemb.qmbform.descriptor.RowDescriptor
 import com.quemb.qmbform.view.Cell
+import java.io.File
 import java.util.ArrayList
 
-open class ImageRowDescriptor(imageTag: String, imageTitle: String, val imageViewReceiver: ImageReceiver?): RowDescriptor<Bitmap>(), CustomCellViewFactory {
+open class ImageRowDescriptor(imageTag: String, imageTitle: String, val imageViewReceiver: ImageReceiver?): RowDescriptor<File>(), CustomCellViewFactory {
     override fun onViewCreated(cell: Cell) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

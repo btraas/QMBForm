@@ -18,6 +18,11 @@ import com.devrygreenhouses.qmb.rows.image.ImageRowDescriptor
 import com.devrygreenhouses.qmb.rows.push.CustomFragmentActivity
 import com.devrygreenhouses.qmb.rows.push.PushHandlerPointer
 import com.devrygreenhouses.qmb.rows.push.fragment.FragmentPushHandler
+import android.graphics.Bitmap
+import com.quemb.qmbform.descriptor.Value
+import java.io.FileOutputStream
+import java.io.IOException
+
 
 @SuppressLint("ViewConstructor")
 /**
@@ -44,10 +49,34 @@ class DrawCell(val activity: Activity, rowDescriptor: ImageRowDescriptor)
     val handler = FragmentPushHandler(activity, rowDescriptor.title, { true }) {
 
         val newFragment = DrawFragment()
-        newFragment.onSave = {
+        newFragment.onSave = {bitmap ->
 
-            image = it
-            _applyBitmap(it)
+            //image = it
+            _applyBitmap(bitmap)
+
+            this.createImageFile()?.let { newFile ->
+                var out: FileOutputStream? = null
+                try {
+                    out = FileOutputStream(newFile.absolutePath)
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) // bmp is your Bitmap instance
+                    // PNG is a lossless format, the compression factor (100) is ignored
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    try {
+                        if (out != null) {
+                            out!!.close()
+                        }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                }
+                rowDescriptor.value = Value(newFile)
+            }
+
+
+
 
         }
         newFragment

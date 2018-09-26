@@ -8,6 +8,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import com.devrygreenhouses.qmb.rows.image.ImageReceiver
 import android.provider.MediaStore
@@ -15,8 +16,10 @@ import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
 import com.devrygreenhouses.qmb.FormFinishDelegate
+import com.devrygreenhouses.qmb.extensions.compressBitmap
 import com.devrygreenhouses.qmb.rows.image.ImageCell
 import com.devrygreenhouses.qmb.rows.push.fragment.FragmentPushHandler
+import java.io.File
 import java.io.IOException
 
 
@@ -24,6 +27,10 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
 
     var handler: FragmentPushHandler? = null
     override var onReceiveBitmap: ((Bitmap?) -> Unit)? = null
+    override var onReceiveFile: ((File?) -> Unit)? = null
+    override var initPhotoFromCamera: (() -> Unit)? = null
+    override var initPhotoFromGallery: (() -> Unit)? = null
+
 
     private val TAG = "CustomFormActivity"
 
@@ -82,24 +89,46 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
         if (requestCode == ImageCell.CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
 
             var imageData = data?.extras?.get("data") as? Bitmap?
+            var imageFile: File? = null
+
+            if (data?.getData() is Uri) {
+
+                val cursor = contentResolver.query(data.data, arrayOf(android.provider.MediaStore.Images.ImageColumns.DATA), null, null, null)
+                cursor!!.moveToFirst()
+
+                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                val selectedImagePath = cursor.getString(idx)
+                cursor.close()
+
+                imageFile = File(selectedImagePath)
+
+                onReceiveFile?.invoke(imageFile)
+            }
 
             if(imageData == null) {
                 val uri = data?.getData()
 
-                try {
-                    imageData = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+
+
+                if (uri != null) {
+
+                    try {
+                        imageData = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 }
 
             }
+
+
 
 
             runOnUiThread {
-                imageData?.let {
-                    onReceiveBitmap?.invoke(it)
-                }
+                onReceiveBitmap?.invoke(imageData)
             }
+
+
 
         }
 
@@ -108,16 +137,18 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == ImageCell.CUSTOM_CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(cameraIntent, ImageCell.CAMERA_REQUEST)
-            } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show()
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                ImageCell.CUSTOM_CAMERA_PERMISSION_CODE -> initPhotoFromCamera?.invoke()
+                ImageCell.CUSTOM_GALLERY_PERMISSION_CODE -> initPhotoFromGallery?.invoke()
             }
 
+        } else {
+            Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show()
         }
+
+
     }
 
 //        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
