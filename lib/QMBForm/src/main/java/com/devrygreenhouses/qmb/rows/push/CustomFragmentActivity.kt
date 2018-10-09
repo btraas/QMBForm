@@ -27,7 +27,7 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
 
     var handler: FragmentPushHandler? = null
     override var onReceiveBitmap: ((Bitmap?) -> Unit)? = null
-    override var onReceiveFile: ((File?) -> Unit)? = null
+    override var onReceiveUri: ((Uri?) -> Unit)? = null
     override var initPhotoFromCamera: (() -> Unit)? = null
     override var initPhotoFromGallery: (() -> Unit)? = null
 
@@ -93,16 +93,16 @@ class CustomFragmentActivity : AppCompatActivity(), ImageReceiver {
 
             if (data?.getData() is Uri) {
 
-                val cursor = contentResolver.query(data.data, arrayOf(android.provider.MediaStore.Images.ImageColumns.DATA), null, null, null)
-                cursor!!.moveToFirst()
+//                val cursor = contentResolver.query(data.data, arrayOf(android.provider.MediaStore.Images.ImageColumns.DATA), null, null, null)
+//                cursor!!.moveToFirst()
+//
+//                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+//                val selectedImagePath = cursor.getString(idx)
+//                cursor.close()
+//
+//                imageFile = File(selectedImagePath)
 
-                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                val selectedImagePath = cursor.getString(idx)
-                cursor.close()
-
-                imageFile = File(selectedImagePath)
-
-                onReceiveFile?.invoke(imageFile)
+                onReceiveUri?.invoke(data.data)
             }
 
             if(imageData == null) {

@@ -52,13 +52,21 @@ fun File.compressBitmap(quality: Float = 1F, format: Bitmap.CompressFormat =  Bi
         val options = BitmapFactory.Options()
         options.inSampleSize = 2
 
-        val tmpBmp = BitmapFactory.decodeStream(FileInputStream(this), null, options)
+        try {
+            val tmpBmp = BitmapFactory.decodeStream(FileInputStream(this), null, options)
 
-        val os = FileOutputStream(this)
+            val os = FileOutputStream(this)
 
-        if(tmpBmp == null) return
+            if(tmpBmp == null) return
 
-        tmpBmp.compress(format, (quality * 100).roundToInt(), os)
+            tmpBmp.compress(format, (quality * 100).roundToInt(), os)
+
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
+
+
+
 
 
     } catch(e: IOException) {

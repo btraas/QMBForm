@@ -67,3 +67,11 @@ fun Uri.autoRotatedBitmap(cr: ContentResolver): Bitmap? {
     }
 
 }
+
+fun Uri.isContent(): Boolean {
+    return (scheme == "content")
+}
+
+fun Uri.isFile(): Boolean {
+    return scheme == "file"
+}

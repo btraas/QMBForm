@@ -37,6 +37,11 @@ public class FormEditTextFieldCell extends FormTitleFieldCell {
 
         setStyleId(mEditView, CellDescriptor.APPEARANCE_TEXT_VALUE, CellDescriptor.COLOR_VALUE);
         setHint(mEditView, CellDescriptor.PLACEHOLDER, CellDescriptor.PLACEHOLDER_COLOR);
+
+        if(getRowDescriptor().getValueData() != null) {
+            String text = getRowDescriptor().getValueData().toString();
+            mEditView.setText(text);
+        }
     }
 
     @Override

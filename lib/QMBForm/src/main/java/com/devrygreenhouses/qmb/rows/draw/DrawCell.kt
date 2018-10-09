@@ -19,6 +19,7 @@ import com.devrygreenhouses.qmb.rows.push.CustomFragmentActivity
 import com.devrygreenhouses.qmb.rows.push.PushHandlerPointer
 import com.devrygreenhouses.qmb.rows.push.fragment.FragmentPushHandler
 import android.graphics.Bitmap
+import android.net.Uri
 import com.quemb.qmbform.descriptor.Value
 import java.io.FileOutputStream
 import java.io.IOException
@@ -52,7 +53,7 @@ class DrawCell(val activity: Activity, rowDescriptor: ImageRowDescriptor)
         newFragment.onSave = {bitmap ->
 
             //image = it
-            _applyBitmap(bitmap)
+            applyBitmap(bitmap)
 
             this.createImageFile()?.let { newFile ->
                 var out: FileOutputStream? = null
@@ -72,7 +73,7 @@ class DrawCell(val activity: Activity, rowDescriptor: ImageRowDescriptor)
                     }
 
                 }
-                rowDescriptor.value = Value(newFile)
+                rowDescriptor.value = Value(Uri.fromFile(newFile))
             }
 
 

@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.quemb.qmbform.OnFormRowClickListener;
 import com.quemb.qmbform.R;
 import com.quemb.qmbform.descriptor.CellDescriptor;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
@@ -39,6 +38,13 @@ public abstract class FormBaseCell extends Cell {
         super(context, rowDescriptor);
 
     }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        this.setBackgroundColor(this.getRowDescriptor().backgroundColor);
+    }
+
 
     @Override
     protected void init() {

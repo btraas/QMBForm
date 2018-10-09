@@ -1,19 +1,21 @@
 package com.quemb.qmbform.descriptor;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 
 /**
  * Created by tonimoeckel on 14.07.14.
  */
 public class Value<T> implements Serializable {
-    private T mValue;
+    private @Nullable T mValue;
     private OnValueChangeListener mOnValueChangeListener;
 
     public Value(T value) {
         mValue = value;
     }
 
-    public T getValue() {
+    public @Nullable T getValue() {
         return mValue;
     }
 

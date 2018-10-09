@@ -60,17 +60,17 @@ class NestedPushRowDescriptor<T: NestedElement<*>>(tag: String, title: String, v
         super.setValue(value)
         val str = value?.value?.toString()
         if(this.cell !is PushCell<*>) {
-            Log.w("NestedPushRowDescriptor", "setValue() called on a "+this.cell.javaClass.simpleName)
+            Log.w("NestedPushRowDescriptor", "setValue() called on a "+this.cell?.javaClass?.simpleName)
             return
         }
         val cell = this.cell as PushCell<*>
         val valueTextView = (cell).findViewById<TextView>(R.id.value)
         activity.runOnUiThread {
-            Log.d("NestedPushRowDescriptor", this.cell.javaClass.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
+            Log.d("NestedPushRowDescriptor", this.cell?.javaClass?.simpleName.toString()+"($title).findViewById(R.id.value).text = \"${str}\"")
 
             valueTextView!!.text = "$str"
             valueTextView.invalidate()
-            Log.d("NestedPushRowDescriptor", "Actual: " + this.cell.findViewById<TextView>(R.id.value).text.toString())
+            Log.d("NestedPushRowDescriptor", "Actual: " + this.cell?.findViewById<TextView>(R.id.value)?.text.toString())
 
             //this.cell = cell
             //cell?.findViewById<TextView>(R.id.textView)?.text = str

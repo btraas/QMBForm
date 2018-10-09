@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -32,11 +33,16 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.widget.Toast
 import com.devrygreenhouses.qmb.extensions.autoRotatedBitmap
 import com.devrygreenhouses.qmb.extensions.compressBitmap
+import com.devrygreenhouses.qmb.extensions.context
+import com.devrygreenhouses.qmb.extensions.isContent
 import com.quemb.qmbform.BuildConfig
+import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Exception
 
 
 @SuppressLint("ViewConstructor")
@@ -47,7 +53,7 @@ open
 class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageReceiver: ImageReceiver?)
     : FormButtonFieldCell(context, rowDescriptor) {
 
-    var mCurrentPhotoPath: String? = null
+    var mCurrentPhotoPath: String? = null // only used for creating files with the camera option
     var imageUri: Uri? = null
 
 
@@ -72,6 +78,7 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
 
 
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
 
@@ -99,6 +106,34 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
             }
         }
 
+
+
+       rowDescriptor.value?.value?.let { it ->
+           val file = it as Uri
+           imageUri = file
+//           mCurrentPhotoPath = imageUri!!.path
+
+           val context = context //row.sectionDescriptor.formDescriptor.context
+           val resolver = context?.applicationContext?.contentResolver
+
+           try {
+               val image = MediaStore.Images.Media.getBitmap(resolver, imageUri)
+               this.imageView.let { iv ->
+              //this.findViewById<ImageView>(R.id.imageView).run {
+                   if(iv.drawable == null || (iv.drawable as? BitmapDrawable)?.bitmap != image)  {
+                       this@ImageCell.applyBitmap(image)
+                   }
+               }
+           } catch (e: Exception) {
+               e.printStackTrace()
+           }
+
+
+
+       }
+
+
+
     }
 
 
@@ -116,7 +151,10 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
 //    }
 
 
-    protected fun _applyBitmap(bitmap: Bitmap) {
+    /**
+     * Warning: doesn't set values, just updates the UI.
+     */
+    public fun applyBitmap(bitmap: Bitmap) {
 
         //rowDescriptor.value = Value(bitmap)
 
@@ -142,10 +180,10 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
     }
 
     @Throws(IOException::class)
-    fun createImageFile() : File? {
+    fun createImageFile(storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)) : File? {
 // Create an image file name
         val imageFileName = "merch_" + System.currentTimeMillis().toString() + "_"
-        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        //val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(
                 imageFileName, /* prefix */
                 ".jpg", /* suffix */
@@ -157,16 +195,18 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
         return image
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint("InlinedApi")
     override fun onClick(v: View?) {
 
         imageReceiver?.onReceiveBitmap = { btmp ->
             var bitmap = btmp
-            if(imageUri != null) { // workaround to get larger resolution images
+            if(imageUri != null ) { // workaround to get larger resolution images
                 val ctx = v?.context ?: this@ImageCell.context
                 //val bmp = MediaStore.Images.Media.getBitmap(ctx.contentResolver, imageUri)
 
-                val file = File(mCurrentPhotoPath) //(imageUri!!.path)
+                if(mCurrentPhotoPath != null) {
+                    val file = File(mCurrentPhotoPath) //(imageUri!!.path)
 
 //                val bmp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //                    imageUri!!.autoRotatedBitmap(ctx.contentResolver)
@@ -174,29 +214,59 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
 //                    MediaStore.Images.Media.getBitmap(ctx.contentResolver, imageUri)
 //                }
 
-                val bmp = file.autoRotatedBitmap()
+                    val bmp = file.autoRotatedBitmap()
 
-                file.compressBitmap(0.4F)
+                    file.compressBitmap(0.4F)
 
-                rowDescriptor.value = (Value(file))
+                    rowDescriptor.value = (Value(Uri.fromFile(file)))
 
 
-                if(bmp != null) {
-                    bitmap = bmp
+                    if(bmp != null) {
+                        bitmap = bmp
+                    }
+                } else {
+
+                    Log.e("ImageCell.onClick", "mCurrentPhotoPath is null!")
                 }
+
+
             }
 
             if(bitmap != null) {
 //                rowDescriptor.value = (Value(bitmap))
-                _applyBitmap(bitmap)
+                applyBitmap(bitmap)
             }
 
 
         }
-        imageReceiver?.onReceiveFile = { file ->
-            file?.compressBitmap(0.4F)
+        imageReceiver?.onReceiveUri = { _uri ->
+            //file?.compressBitmap(0.4F) // don't compress a file on the SD card...
             //val bmp = file?.autoRotatedBitmap()
-            rowDescriptor.value = (Value(file))
+
+            var uri = _uri
+
+            if(_uri?.isContent() == true) { // image is from a content provider (like google photos). This Uri won't be valid after this activity is destroyed.
+                //val bitmap = MediaStore.Images.Media.getBitmap(context.applicationContext.contentResolver, uri)
+
+                val newFile = createImageFile(context.cacheDir)
+
+                val inStream = context.applicationContext.contentResolver.openInputStream(uri)
+                val outStream = FileOutputStream(newFile)
+                val buf = ByteArray(1024)
+                var len = inStream.read(buf)
+                while (len > 0) {
+                    outStream.write(buf, 0, len)
+                    len = inStream.read(buf)
+                }
+                outStream.close()
+                inStream.close()
+
+                uri = Uri.fromFile(newFile)
+
+            }
+            rowDescriptor.value = (Value(uri))
+
+            imageUri = uri //Uri.fromFile(file)
 
         }
 
