@@ -13,7 +13,14 @@
     <color name="section_cell_background">#FFFFFFFF</color>
     <color name="section_cell_text">#000000</color>
     <color name="transparentColor">#00000000</color>
-    <declare-styleable name="Cell"><attr format="color" name="qmbFromSectionBackgroundColor"/><attr format="color" name="qmbFromRowBackgroundColor"/><attr format="color" name="qmbFromRowDividerColor"/><attr format="color" name="qmbFromRowTitleColor"/></declare-styleable>
+    <declare-styleable name="Cell">
+
+        <attr format="color" name="qmbFromSectionBackgroundColor"/>
+
+        <attr format="color" name="qmbFromRowBackgroundColor"/>
+        <attr format="color" name="qmbFromRowDividerColor"/>
+        <attr format="color" name="qmbFromRowTitleColor"/>
+    </declare-styleable>
     <dimen name="qmb_padding">14dp</dimen>
     <dimen name="qmb_padding_half">7dp</dimen>
     <dimen name="qmb_padding_top">30dp</dimen>

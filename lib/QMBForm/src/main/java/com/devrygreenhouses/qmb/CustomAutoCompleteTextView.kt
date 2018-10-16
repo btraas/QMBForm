@@ -13,10 +13,7 @@ import android.view.*
 import android.view.inputmethod.CompletionInfo
 import android.view.inputmethod.CorrectionInfo
 import android.view.inputmethod.EditorInfo
-import android.widget.AutoCompleteTextView
-import android.widget.ListPopupWindow
-import android.widget.PopupWindow
-import android.widget.Toast
+import android.widget.*
 import com.quemb.qmbform.BuildConfig
 
 import java.lang.reflect.Field
@@ -71,30 +68,34 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
 
         try {
 
-            if(Build.VERSION.SDK_INT >= 26) {
-                val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet") // doesn't exist in API 21...
-                setFlag.isAccessible = true
-                setFlag.set(popupWindow, true)
+            when {
+                Build.VERSION.SDK_INT >= 26 -> {
+                    val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet") // doesn't exist in API 21...
+                    setFlag.isAccessible = true
+                    setFlag.set(popupWindow, true)
 
-                val overlapFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchor")
-                overlapFlag.isAccessible = true
-                overlapFlag.set(popupWindow, overlap)
-            } else if(Build.VERSION.SDK_INT >= 23) {
+                    val overlapFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchor")
+                    overlapFlag.isAccessible = true
+                    overlapFlag.set(popupWindow, overlap)
+                }
+                Build.VERSION.SDK_INT >= 23 -> {
 
 
-                val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
-                                                                                            // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
-                field.isAccessible = true
-                val mPopup = field.get(popupWindow) as PopupWindow
+                    val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
+                    // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
+                    field.isAccessible = true
+                    val mPopup = field.get(popupWindow) as PopupWindow
 
-                mPopup.overlapAnchor = overlap
-            } else {
-                val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
-                // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
-                field.isAccessible = true
-                val mPopup = field.get(popupWindow) as PopupWindow
+                    mPopup.overlapAnchor = overlap
+                }
+                else -> {
+                    val field = ListPopupWindow::class.java.getDeclaredField("mPopup") // confusing, this mPopup is a PopupWindow, whereas the AutoCompleteTextView's mPopup is a ListPopupWindow.
+                    // a ListPopupWindow ISN'T a PopupWindow, but it HAS a PopupWindow internally. GREAT.
+                    field.isAccessible = true
+                    val mPopup = field.get(popupWindow) as PopupWindow
 
-                PopupWindowCompat.setOverlapAnchor(mPopup, overlap)
+                    PopupWindowCompat.setOverlapAnchor(mPopup, overlap)
+                }
             }
 
 
@@ -124,7 +125,7 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
 
 //        super.setDropDownHeight(800)
         super.setDropDownVerticalOffset(verticalOffset)
-        super.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT)
+        super.setDropDownWidth(AbsListView.LayoutParams.MATCH_PARENT)
 
 
     }
@@ -148,12 +149,12 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
     }
 
     override fun onCommitCompletion(completion: CompletionInfo?) {
-        Log.d("CustomAutoComplete", "onCommitCompletion(completion" );
+        Log.d("CustomAutoComplete", "onCommitCompletion(completion)" )
         super.onCommitCompletion(completion)
     }
 
     override fun onCommitCorrection(info: CorrectionInfo?) {
-        Log.d("CustomAutoComplete", "onCommitCompletion(info" );
+        Log.d("CustomAutoComplete", "onCommitCompletion(info)" )
 
         super.onCommitCorrection(info)
     }

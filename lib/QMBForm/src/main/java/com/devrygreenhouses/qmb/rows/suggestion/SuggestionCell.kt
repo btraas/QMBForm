@@ -37,12 +37,9 @@ class SuggestionCell(context: Context, rowDescriptor: SuggestionRowDescriptor<*>
 
 
 
-    override fun init() {
-        super.init()
-    }
-
 
     override fun onEditTextChanged(string: String?) {
+        println(string)
         //super.onEditTextChanged(string) // this will trigger a value change, which isn't happening in a suggestionCell.
     }
 
@@ -101,7 +98,10 @@ class SuggestionCell(context: Context, rowDescriptor: SuggestionRowDescriptor<*>
     override fun onCellSelected() {
 
         super.onCellSelected()
-        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 500)
+//        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 500)
+        //this.layoutParams = AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 500)
+        autoComplete?.showDropDown()
+
     }
 
     override fun getResource(): Int {
