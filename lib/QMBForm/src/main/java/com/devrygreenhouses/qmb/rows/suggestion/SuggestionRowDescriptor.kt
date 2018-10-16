@@ -15,6 +15,9 @@ import com.quemb.qmbform.view.Cell
 import java.util.ArrayList
 
 class SuggestionRowDescriptor<T>: RowDescriptor<T>, CustomCellViewFactory, RowFactory<SuggestionRowDescriptor<T>> {
+    override fun onViewCreated(cell: Cell) {
+
+    }
 
     private var anchorView: View
     private var verticalOffset: Int

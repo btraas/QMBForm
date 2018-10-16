@@ -1,9 +1,13 @@
 package com.quemb.qmbform.descriptor;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
+import android.widget.ListView;
 
 import com.devrygreenhouses.qmb.RowFactory;
 import com.quemb.qmbform.R;
+import com.quemb.qmbform.adapter.FormAdapter;
 import com.quemb.qmbform.annotation.FormElement;
 import com.quemb.qmbform.annotation.FormValidator;
 
@@ -77,7 +81,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     public static final String FormRowDescriptorTypeTextField = "textField";
 
     private String mRowType;
-    private Value<T> mValue;
+    private @Nullable Value<T> mValue;
     /**
      * A list of valid values to pick from (e.g. used for spinners)
      */
@@ -95,6 +99,34 @@ public class RowDescriptor<T> extends FormItemDescriptor {
     private int mHint = android.R.string.untitled;
 
     private boolean mLastRowInSection = false;
+
+    // Brayden Oct 2018
+    public int findIndex(ListView parent) {
+        FormDescriptor fd = mSectionDescriptor.getFormDescriptor();
+
+        boolean sectionsSeparated = ((FormAdapter)parent.getAdapter()).getEnableSectionSeparator();
+
+        int index = 0;
+
+        for(SectionDescriptor sd : fd.getSections()) {
+            if(sectionsSeparated) index++;
+            index++;
+            for(RowDescriptor rd : sd.getRows()) {
+                if(rd == this) return index;
+                else index++;
+            }
+        }
+        return -1;
+    }
+    public int backgroundColor = Color.WHITE;
+
+//    private boolean required = false;
+//    public void setRequired(boolean value) {
+//        required = value;
+//    }
+//    public boolean isRequired() {
+//        return required;
+//    }
 
     public static RowDescriptor newInstance(String tag) {
 
@@ -150,7 +182,7 @@ public class RowDescriptor<T> extends FormItemDescriptor {
         mSectionDescriptor = sectionDescriptor;
     }
 
-    public Value<T> getValue() {
+    public @Nullable Value<T> getValue() {
         return mValue;
     }
 

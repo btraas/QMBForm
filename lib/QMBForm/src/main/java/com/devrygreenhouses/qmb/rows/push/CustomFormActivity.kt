@@ -6,12 +6,13 @@ import android.util.Log
 import android.widget.ListView
 import com.devrygreenhouses.qmb.rows.push.PushHandler
 import com.devrygreenhouses.qmb.rows.push.PushHandlerPointer
+import com.devrygreenhouses.qmb.rows.push.nested.NestedPushHandler
 import com.quemb.qmbform.R
 
 
 class CustomFormActivity : AppCompatActivity() {
 
-    var handler: PushHandler<*>? = null
+    var handler: NestedPushHandler<*>? = null
 
     private val TAG = "CustomFormActivity"
 
@@ -21,7 +22,7 @@ class CustomFormActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate")
 
-        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve()
+        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as NestedPushHandler<*>
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = handler?.title
@@ -29,7 +30,7 @@ class CustomFormActivity : AppCompatActivity() {
         //Toast.makeText(this, "generating form", Toast.LENGTH_SHORT).show()
 
         handler?.newActivity = this
-        handler?.generate(this, findViewById<ListView>(R.id.list_view))
+        handler?.generate(this)
 
 
     }

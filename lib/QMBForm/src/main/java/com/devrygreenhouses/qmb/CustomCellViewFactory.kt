@@ -5,4 +5,5 @@ import com.quemb.qmbform.view.Cell
 
 interface CustomCellViewFactory {
     fun createView(ctx: Context): Cell
+    fun onViewCreated(cell: Cell)
 }

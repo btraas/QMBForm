@@ -1,5 +1,7 @@
 package com.quemb.qmbform.descriptor;
 
+import android.support.annotation.Nullable;
+
 import com.quemb.qmbform.OnFormRowClickListener;
 import com.quemb.qmbform.view.Cell;
 
@@ -36,7 +38,7 @@ public class FormItemDescriptor {
         mTag = tag;
     }
 
-    public Cell getCell() {
+    public @Nullable Cell getCell() {
         return mCell;
     }
 

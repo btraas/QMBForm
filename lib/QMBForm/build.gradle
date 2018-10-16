@@ -161,6 +161,7 @@ task jacocoTestReport(type: JacocoReport) {
 group = 'com.github.quemb'
 repositories {
     mavenCentral()
+    google()
 }
 
 
