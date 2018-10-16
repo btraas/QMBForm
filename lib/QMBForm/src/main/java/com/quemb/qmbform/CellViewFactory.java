@@ -3,6 +3,7 @@ package com.quemb.qmbform;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 
 import com.devrygreenhouses.qmb.CustomCellViewFactory;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;
@@ -138,7 +139,10 @@ public class CellViewFactory {
         Cell rowView = null;
 
         if (descriptor instanceof CustomCellViewFactory) {
-            return ((CustomCellViewFactory) descriptor).createView(context);
+            Cell newView = ((CustomCellViewFactory) descriptor).createView(context);
+            ((CustomCellViewFactory) descriptor).onViewCreated(newView);
+
+            return newView;
         }
 
         if (descriptor instanceof SectionDescriptor) {

@@ -17,4 +17,5 @@ public class FormEditNumberInlineFieldCell extends FormEditNumberFieldCell {
     protected int getResource() {
         return R.layout.edit_text_view_inline_field_cell;
     }
+
 }

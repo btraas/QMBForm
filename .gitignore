@@ -1,4 +1,6 @@
+
 lib/QMBForm/QMBForm.iml
+*.class
 R.java
 *.iml
 .gradle
@@ -12,3 +14,4 @@ R.java
 .externalNativeBuild
 app/build/
 lib/QMBForm/build
+./lib/QMBForm/build

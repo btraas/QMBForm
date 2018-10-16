@@ -41,4 +41,9 @@ public class CellDescriptor
     public static final String MULTI_VALUE_LISTENER = "FORM_MULTI_VALUE_LISTENER";
 
     public static final String BACKGROUND_COLOR = "BACKGROUND_COLOR";
+
+    public static final String PUSH_COLOR_LABEL = "FORM_PUSH_COLOR_LABEL";
+    public static final String PLACEHOLDER = "PLACEHOLDER";
+    public static final String PLACEHOLDER_COLOR = "PLACEHOLDER_COLOR";
+
 }
