@@ -18,7 +18,7 @@ import com.quemb.qmbform.view.Cell
 
 
 abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, title: String, val getIconFor: (T) -> Drawable?, val rootElement: T, val valueChangedListener: OnFormRowValueChangedListener)
-    : PushHandler<CustomFormActivity>(oldActivity, title), OnFormRowClickListener {
+    : PushHandler<CustomFormActivity>(oldActivity, title) {
 
     private val TAG = "NestedPushHandler"
     var _rows: List<RowDescriptor<*>> = ArrayList()
@@ -26,6 +26,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
 
     var mFormManager: FormManager? = null
     var form: FormDescriptor? = null
+
 
     override fun canPresent(): Boolean {
         return true
@@ -86,7 +87,7 @@ abstract class NestedPushHandler<T: NestedElement<*>>(oldActivity: Activity, tit
         return cell
     }
 
-    fun buildForm(): FormDescriptor {
+    open fun buildForm(): FormDescriptor {
 
         val form = FormDescriptor()
         val subFolders = rootElement.getSubFolders()

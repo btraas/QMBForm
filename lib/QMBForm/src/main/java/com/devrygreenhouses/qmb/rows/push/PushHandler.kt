@@ -1,17 +1,26 @@
 package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
+import com.quemb.qmbform.OnFormRowClickListener
 import com.quemb.qmbform.descriptor.*
 import java.io.Serializable
 
 
 abstract class PushHandler<NewActivityT: Activity>(val oldActivity: Activity,
                                                 val title: String)
-    : Serializable {
+    : Serializable, OnFormRowClickListener {
 
     private val TAG = "PushHandler"
 
     var newActivity: Activity? = null
+
+    var showRadioButton: Boolean = true
+
+
+    // urg... not the best way to do this (NestedPushHandler has a 'selected' property)
+    var simpleSelected: Any? = null
+
+
 
 
 

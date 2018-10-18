@@ -16,6 +16,9 @@ class FragmentPushHandler(oldActivity: Activity,
                           val buildFragment: (newActivity: AppCompatActivity) -> Fragment)
 
     : PushHandler<CustomFragmentActivity>(oldActivity, title), Serializable {
+    override fun onFormRowClick(itemDescriptor: FormItemDescriptor?) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     override fun onPresent(oldActivity: Activity, newActivity: CustomFragmentActivity) {

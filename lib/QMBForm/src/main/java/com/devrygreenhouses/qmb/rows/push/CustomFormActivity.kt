@@ -12,17 +12,19 @@ import com.quemb.qmbform.R
 
 class CustomFormActivity : AppCompatActivity() {
 
-    var handler: NestedPushHandler<*>? = null
+    var handler: PushHandler<CustomFormActivity>? = null
+    lateinit var listView: ListView
 
     private val TAG = "CustomFormActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_push)
+        listView = findViewById(R.id.list_view)
 
         Log.d(TAG, "onCreate")
 
-        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as NestedPushHandler<*>
+        handler = (intent.getSerializableExtra("handler") as PushHandlerPointer).retrieve() as PushHandler<CustomFormActivity>
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = handler?.title
@@ -31,7 +33,6 @@ class CustomFormActivity : AppCompatActivity() {
 
         handler?.newActivity = this
         handler?.generate(this)
-
 
     }
 

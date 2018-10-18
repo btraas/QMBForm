@@ -1,4 +1,4 @@
-package com.devrygreenhouses.qmb.rows.push.nested
+package com.devrygreenhouses.qmb.rows.push
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -13,7 +13,7 @@ import com.quemb.qmbform.R
 /**
  * Created by pmaccamp on 8/28/2015.
  */
-class FinishCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedPushRowDescriptor<*>, val handler: NestedPushHandler<T>?, val value: T)
+class SimpleFinishCell<T>(activity: Activity, rowDescriptor: FinishRowDescriptor<*>, val handler: PushHandler<CustomFormActivity>?, val value: T)
     : FormButtonFieldCell(activity, rowDescriptor) {
 
 
@@ -51,11 +51,10 @@ class FinishCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedP
         val r = rowDescriptor
         val roValue = r.value
         val h = handler
-        val selected = h?.selected
-        val v = value
-        if( (handler?.showRadioButton == true) && handler?.selected != null && handler?.selected == value) {
+        val simpleSelected = h?.simpleSelected
+        if( (handler?.showRadioButton == true) && handler?.simpleSelected != null && handler?.simpleSelected == value) {
             this.findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.ic_radio_checked)
-        } else if(handler?.showRadioButton == true && (handler?.selected == null || handler?.selected != value)) {
+        } else if(handler?.showRadioButton == true && (handler?.simpleSelected == null || handler?.simpleSelected != value)) {
             this.findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.ic_radio)
         } else {
             this.findViewById<ImageView>(R.id.imageView).setImageDrawable(null)
@@ -83,9 +82,9 @@ class FinishCell<T: NestedElement<*>>(activity: Activity, rowDescriptor: NestedP
 //        }
 
         val value = rowDescriptor.value?.value
-        if(handler?.showRadioButton == true && value != null && value == handler?.selected)
+        if(handler?.showRadioButton == true && value != null && value == handler?.simpleSelected)
             this.findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.ic_radio_checked)
-        else if(handler?.showRadioButton == true && (value == null || value == handler?.selected)) {
+        else if(handler?.showRadioButton == true && (value == null || value == handler?.simpleSelected)) {
             this.findViewById<ImageView>(R.id.imageView).setImageResource(R.drawable.ic_radio)
         }
         else
