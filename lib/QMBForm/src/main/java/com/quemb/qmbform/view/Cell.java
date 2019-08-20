@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.StyleRes;
 
 import com.quemb.qmbform.descriptor.CellDescriptor;
 import com.quemb.qmbform.descriptor.FormItemDescriptor;

@@ -2,7 +2,7 @@ package com.devrygreenhouses.qmb
 
 import android.content.Context
 import android.os.Looper
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.quemb.qmbform.OnFormRowClickListener
 import com.quemb.qmbform.R
 import com.quemb.qmbform.descriptor.CellDescriptor.COLOR_VALUE

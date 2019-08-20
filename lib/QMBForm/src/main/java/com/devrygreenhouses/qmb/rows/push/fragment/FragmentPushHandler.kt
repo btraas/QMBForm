@@ -1,8 +1,8 @@
 package com.devrygreenhouses.qmb.rows.push.fragment
 
 import android.app.Activity
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.devrygreenhouses.qmb.rows.push.CustomFragmentActivity
 import com.devrygreenhouses.qmb.rows.push.PushHandler
 import com.quemb.qmbform.R

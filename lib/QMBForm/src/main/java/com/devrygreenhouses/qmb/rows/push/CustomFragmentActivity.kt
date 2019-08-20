@@ -1,7 +1,6 @@
 package com.devrygreenhouses.qmb.rows.push
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.quemb.qmbform.R
 import android.app.Activity
@@ -12,9 +11,9 @@ import android.net.Uri
 import android.widget.Toast
 import com.devrygreenhouses.qmb.rows.image.ImageReceiver
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.devrygreenhouses.qmb.FormFinishDelegate
 import com.devrygreenhouses.qmb.extensions.compressBitmap
 import com.devrygreenhouses.qmb.rows.image.ImageCell

@@ -5,7 +5,8 @@ import com.quemb.qmbform.R;
 import com.quemb.qmbform.descriptor.RowDescriptor;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by pmaccamp on 8/28/2015.

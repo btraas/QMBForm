@@ -2,42 +2,27 @@ buildscript {
 
     repositories {
         mavenCentral()
-<<<<<<< HEAD
         jcenter()
         google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
-=======
+        classpath 'com.android.tools.build:gradle:3.4.0'
         google()
     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
->>>>>>> 5a6d1da26c85f606fa4b8366dc4a3c7c870efa4c
-    }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-<<<<<<< HEAD
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-=======
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
->>>>>>> 5a6d1da26c85f606fa4b8366dc4a3c7c870efa4c
 
     defaultConfig {
         applicationId "com.quemb.qmbform.sample"
         minSdkVersion 14
-<<<<<<< HEAD
-        targetSdkVersion 25
-=======
         targetSdkVersion 26
->>>>>>> 5a6d1da26c85f606fa4b8366dc4a3c7c870efa4c
         versionCode 2
         versionName "1.1"
     }

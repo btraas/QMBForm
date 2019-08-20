@@ -2,8 +2,9 @@ package com.quemb.qmbform.descriptor;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
 
 import com.devrygreenhouses.qmb.RowFactory;
 import com.quemb.qmbform.R;

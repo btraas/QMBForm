@@ -1,9 +1,9 @@
 package com.devrygreenhouses.qmb.rows.push
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 import com.devrygreenhouses.qmb.rows.push.PushHandler
 import com.devrygreenhouses.qmb.rows.push.PushHandlerPointer
 import com.devrygreenhouses.qmb.rows.push.nested.NestedPushHandler

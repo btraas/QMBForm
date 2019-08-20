@@ -2,8 +2,8 @@ package com.devrygreenhouses.qmb.rows.draw
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.devrygreenhouses.qmb.rows.image.ImageCell
 import com.devrygreenhouses.qmb.rows.image.ImageReceiver
 import com.devrygreenhouses.qmb.rows.image.ImageRowDescriptor

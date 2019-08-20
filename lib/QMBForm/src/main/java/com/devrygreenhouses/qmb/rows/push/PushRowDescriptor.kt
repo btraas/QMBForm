@@ -2,7 +2,6 @@ package com.devrygreenhouses.qmb.rows.push
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.*
 import com.devrygreenhouses.qmb.CustomCellViewFactory

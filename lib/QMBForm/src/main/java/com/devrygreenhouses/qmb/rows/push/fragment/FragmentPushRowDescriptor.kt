@@ -3,8 +3,8 @@ package com.devrygreenhouses.qmb.rows.push.fragment
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.v4.app.Fragment
 import android.widget.*
+import androidx.fragment.app.Fragment
 import com.devrygreenhouses.qmb.CustomCellViewFactory
 import com.devrygreenhouses.qmb.rows.push.CustomFragmentActivity
 import com.devrygreenhouses.qmb.rows.push.PushCell
@@ -22,7 +22,7 @@ import com.quemb.qmbform.descriptor.Value
  *
  */
 open class FragmentPushRowDescriptor<T: Fragment>(tag: String, title: String, val subtitle: String?, val icon: Drawable?, activity: Activity,
-                                             handler: FragmentPushHandler)
+                                                  handler: FragmentPushHandler)
     : PushRowDescriptor<T>(tag, title, activity, handler), CustomCellViewFactory, Cloneable {
 
 //    var createCallback: ((Activity, Activity) -> Unit)? = null

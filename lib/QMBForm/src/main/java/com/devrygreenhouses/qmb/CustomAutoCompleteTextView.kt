@@ -5,8 +5,6 @@ import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Rect
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.v4.widget.PopupWindowCompat
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
@@ -14,6 +12,9 @@ import android.view.inputmethod.CompletionInfo
 import android.view.inputmethod.CorrectionInfo
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.core.widget.ListPopupWindowCompat
+import androidx.core.widget.PopupWindowCompat
 import com.quemb.qmbform.BuildConfig
 
 import java.lang.reflect.Field
@@ -69,8 +70,8 @@ class CustomAutoCompleteTextView: AutoCompleteTextView {
         try {
 
             when {
-                Build.VERSION.SDK_INT >= 26 -> {
-                    val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet") // doesn't exist in API 21...
+                Build.VERSION.SDK_INT >= 26 && Build.VERSION.SDK_INT <= 27 -> {
+                    val setFlag = ListPopupWindow::class.java.getDeclaredField("mOverlapAnchorSet") // doesn't exist in API 21... Exists but doesn't work in API 28... should try on Oreo again...
                     setFlag.isAccessible = true
                     setFlag.set(popupWindow, true)
 

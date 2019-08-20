@@ -19,22 +19,23 @@ import android.widget.TextView
 
 import com.quemb.qmbform.view.FormButtonFieldCell
 import com.quemb.qmbform.R
-import android.support.v4.content.ContextCompat.checkSelfPermission
 import android.view.View
-import android.support.v7.app.AlertDialog
 import com.devrygreenhouses.qmb.rows.image.ImageReceiver
 import com.devrygreenhouses.qmb.rows.image.ImageRowDescriptor
 import com.quemb.qmbform.descriptor.CellDescriptor
 import com.quemb.qmbform.descriptor.Value
 import kotlinx.android.synthetic.main.finish_field_cell.view.*
 import java.io.File
-import android.os.StrictMode.VmPolicy
-import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat.*
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
+
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.FileProvider
+import com.devrygreenhouses.qmb.ReflectionBuildConfig
 import com.devrygreenhouses.qmb.extensions.autoRotatedBitmap
 import com.devrygreenhouses.qmb.extensions.compressBitmap
 import com.devrygreenhouses.qmb.extensions.context
@@ -182,7 +183,7 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
     @Throws(IOException::class)
     fun createImageFile(storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)) : File? {
 // Create an image file name
-        val imageFileName = "merch_" + System.currentTimeMillis().toString() + "_"
+        val imageFileName = "devry_" + System.currentTimeMillis().toString() + "_"
         //val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(
                 imageFileName, /* prefix */
@@ -331,7 +332,8 @@ class ImageCell(context: Context, rowDescriptor: ImageRowDescriptor, val imageRe
                     val photoFile = this.createImageFile()
                             ?: throw IOException("Failed to create image file")
 
-                    val uri = FileProvider.getUriForFile(context, "com.devrygreenhouses.merchandisingcarttracker.fileprovider", photoFile)
+                    // make sure to create thsi fileprovider!
+                    val uri = FileProvider.getUriForFile(context, ReflectionBuildConfig.APPLICATION_ID(context) +".fileprovider", photoFile)
                     this@ImageCell.imageUri = uri
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
                     startActivityForResult(mActivity, cameraIntent, CAMERA_REQUEST, null)

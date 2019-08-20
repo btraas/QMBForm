@@ -8,7 +8,6 @@ import android.os.Looper
 import android.widget.ImageView
 
 import com.quemb.qmbform.R
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils

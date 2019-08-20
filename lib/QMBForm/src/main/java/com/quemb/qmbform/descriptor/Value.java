@@ -1,6 +1,7 @@
 package com.quemb.qmbform.descriptor;
 
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
